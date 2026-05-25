@@ -51,7 +51,7 @@
 
 Cada journey usa estas secciones:
 
-```
+```text
 1. Propósito
 2. Precondiciones
 3. Happy path  (diagrama Mermaid)

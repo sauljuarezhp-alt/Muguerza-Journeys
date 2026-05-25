@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEI Ambulatoria · Clinica Journey v1</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --primary: #00857C;
+    --primary-dark: #005A54;
+    --primary-light: #E8F4F3;
+    --accent: #F4B942;
+    --bg: #F7F9FA;
+    --surface: #FFFFFF;
+    --text: #1A2E2C;
+    --text-muted: #5C6F6D;
+    --border: #E1E8E7;
+    --whatsapp: #25D366;
+    --whatsapp-bg: #DCF8C6;
+    --bot-bg: #FFFFFF;
+    --danger: #D64545;
+    --warning: #E8A33D;
+    --success: #2DA771;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+  .sidebar {
+    position: sticky; top: 0; align-self: start; height: 100vh;
+    background: linear-gradient(180deg, var(--sidebar-dark, var(--primary-dark)), var(--sidebar, var(--primary)));
+    color: white; padding: 28px 22px; overflow-y: auto;
+  }
+  .sidebar h1 { margin: 0 0 4px; font-size: 18px; font-weight: 700; letter-spacing: -0.2px; }
+  .sidebar .subtitle { font-size: 12px; opacity: 0.75; margin-bottom: 28px; text-transform: uppercase; letter-spacing: 0.6px; }
+  .sidebar nav { display: flex; flex-direction: column; gap: 2px; }
+  .sidebar nav a {
+    color: white; text-decoration: none; padding: 9px 12px; border-radius: 8px;
+    font-size: 13.5px; opacity: 0.85; transition: all 0.15s; border-left: 3px solid transparent;
+  }
+  .sidebar nav a:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+  .sidebar nav a .num { display: inline-block; width: 28px; font-variant-numeric: tabular-nums; opacity: 0.6; font-weight: 600; }
+  .nav-group { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: rgba(255,255,255,0.45); padding: 14px 12px 4px; }
+  .sidebar .meta { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 12px; opacity: 0.75; line-height: 1.7; }
+  .sidebar .meta strong { display: block; margin-top: 8px; color: #fff; opacity: 1; }
+  .sidebar .back { display: inline-block; margin-bottom: 18px; color: white; opacity: 0.7; text-decoration: none; font-size: 12px; }
+  .sidebar .back:hover { opacity: 1; }
+  main { padding: 48px 60px 80px; max-width: 1100px; }
+  .hero {
+    background: var(--surface); border-radius: 16px; padding: 40px 44px;
+    margin-bottom: 36px; box-shadow: var(--shadow); border-left: 6px solid var(--hero-accent, var(--primary));
+  }
+  .hero .eyebrow { text-transform: uppercase; letter-spacing: 1.2px; font-size: 11px; font-weight: 700; color: var(--hero-accent, var(--primary)); margin-bottom: 10px; }
+  .hero h1 { margin: 0 0 12px; font-size: 34px; line-height: 1.15; letter-spacing: -0.5px; }
+  .hero p.lead { font-size: 16px; color: var(--text-muted); margin: 0; max-width: 720px; }
+  .hero .badges { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--primary-light); color: var(--primary-dark); border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .badge.warn { background: #FFF3DD; color: #8A5A00; }
+  .badge.danger { background: #FCE8E8; color: var(--danger); }
+  .badge.green { background: #DCF8C6; color: #075E54; }
+  section.journey { background: var(--surface); border-radius: 14px; padding: 32px 36px; margin-bottom: 24px; box-shadow: var(--shadow); scroll-margin-top: 20px; }
+  section.journey h2 { display: flex; align-items: center; gap: 14px; margin: 0 0 8px; font-size: 22px; letter-spacing: -0.3px; }
+  section.journey h2 .num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 50%; font-size: 14px; font-weight: 700; }
+  section.journey h2 .num.doctor { background: #4A6FA5; }
+  section.journey h2 .num.special { background: var(--accent); color: var(--text); }
+  section.journey > p.purpose { color: var(--text-muted); margin: 0 0 24px; font-size: 14.5px; padding-left: 50px; }
+  .diagram { background: linear-gradient(135deg, #FAFCFB, #F2F7F6); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin: 18px 0 22px; overflow-x: auto; text-align: center; }
+  .mermaid { font-family: inherit !important; min-width: 100%; }
+  .chat-preview { background: #ECE5DD; border-radius: 10px; padding: 18px; margin: 16px 0; border: 1px solid var(--border); }
+  .chat-preview .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); font-weight: 600; margin-bottom: 10px; }
+  .bubble { max-width: 80%; padding: 8px 12px; border-radius: 8px; margin-bottom: 6px; font-size: 14px; line-height: 1.45; box-shadow: 0 1px 0.5px rgba(0,0,0,0.13); word-wrap: break-word; white-space: pre-wrap; }
+  .bubble.bot { background: var(--bot-bg); border-top-left-radius: 0; margin-right: auto; }
+  .bubble.patient { background: var(--whatsapp-bg); border-top-right-radius: 0; margin-left: auto; text-align: left; }
+  .bubble.secretary { background: #E3EAF7; border-top-right-radius: 0; margin-left: auto; text-align: left; }
+  .bubble .author { display: block; font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 2px; }
+  .bubble.patient .author { color: #075E54; }
+  .bubble.secretary .author { color: #4A6FA5; }
+  .screen-mock { background: #1E1E2E; color: #CDD6F4; border-radius: 10px; padding: 20px 24px; margin: 16px 0; font-family: "Consolas", "Fira Code", monospace; font-size: 12.5px; line-height: 1.6; overflow-x: auto; }
+  .screen-mock .bar { background: #313244; border-radius: 6px; padding: 6px 12px; margin-bottom: 12px; font-size: 11px; color: #6C7086; }
+  details { background: #FAFCFB; border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--primary-dark); font-size: 14px; user-select: none; }
+  details[open] summary { margin-bottom: 10px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13.5px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  th { background: var(--primary-light); color: var(--primary-dark); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; }
+  td code { background: #F1F5F4; padding: 1px 6px; border-radius: 4px; font-size: 12.5px; color: var(--primary-dark); }
+  .callout { border-left: 4px solid var(--primary); background: var(--primary-light); padding: 12px 16px; border-radius: 6px; margin: 14px 0; font-size: 14px; }
+  .callout.warn { border-color: var(--warning); background: #FFF8EC; }
+  .callout.danger { border-color: var(--danger); background: #FDECEC; }
+  .callout strong { color: var(--primary-dark); }
+  .callout.warn strong { color: #8A5A00; }
+  .callout.danger strong { color: var(--danger); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
+  .stat { background: var(--primary-light); border-radius: 10px; padding: 14px 16px; }
+  .stat .val { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+  .stat .lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  ul.actions { list-style: none; padding: 0; margin: 12px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  ul.actions li { background: var(--primary-light); border-radius: 8px; padding: 10px 14px; font-size: 13.5px; }
+  ul.actions li strong { display: block; color: var(--primary-dark); font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding: 30px 0 10px; }
+  @media (max-width: 800px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: relative; height: auto; }
+    main { padding: 24px 20px; }
+    .two-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" style="--sidebar-dark:#7A5B00;--sidebar:#B17B00;">
+  <a href="index.html" class="back">&#8592; Volver al índice</a>
+  <h1>CEI Ambulatoria</h1>
+  <div class="subtitle">Operación Clínica · v1</div>
+  <nav>
+    <div class="nav-group">Journeys de clínica</div>
+    <a href="#cl1"><span class="num">CL1</span> Journey paciente</a>
+    <a href="#cl2"><span class="num">CL2</span> Organic — hospital</a>
+    <a href="#cl3"><span class="num">CL3</span> Inorganic — Saltillo</a>
+  </nav>
+  <div class="meta">
+    <strong>Proyecto</strong> CEI Ambulatory Strategy
+    <strong>Actor</strong> Paciente
+    <strong>Modelos</strong> Organic · Inorganic
+    <strong>Versión</strong> v1 · 2026-05-25
+  </div>
+</aside>
+<main>
+  <div class="hero" style="border-left-color:#F4B942;">
+    <div class="eyebrow" style="color:#B17B00;">CEI Ambulatoria · Operación</div>
+    <h1>Journeys de Clínica</h1>
+    <p class="lead">Flujo end-to-end del paciente desde que agenda hasta que sale con su resultado. Tres variantes: el journey genérico de referencia, el modelo organic dentro de un hospital Muguerza existente y el spoke greenfield de Saltillo.</p>
+    <div class="badges">
+      <span class="badge">Organic: hub hospitalario</span>
+      <span class="badge">Inorganic: spoke Saltillo</span>
+      <span class="badge warn">Escalación clínica: protocolos distintos</span>
+    </div>
+  </div>
+
+  <!-- CL1 Journey paciente genérico -->
+  <section class="journey" id="cl1">
+    <h2><span class="num special">CL1</span> Journey del paciente ambulatorio</h2>
+    <p class="purpose">Flujo end-to-end de referencia. Aplica a ambos modelos (organic e inorganic). Las variantes específicas están en CL2 y CL3.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente agenda cita via WhatsApp o llamada] --> B[Recibe confirmacion con indicaciones]
+  B --> C[Recibe recordatorio T-24h y T-2h]
+  C --> D[Hace check-in via WhatsApp al llegar]
+  D --> E[Llega a la clinica y da su nombre en recepcion]
+  E --> F[Recepcion valida en Connect y confirma registro]
+  F --> G[Paciente espera en sala]
+  G --> H{Tipo de servicio}
+  H -->|Laboratorio| I[Extraccion de muestra]
+  H -->|Imagen| J[Sala de estudio con tecnico]
+  H -->|Infusion| K[Sillon de infusion con enfermero]
+  I --> L[Muestra procesada en laboratorio]
+  J --> M[Estudio realizado y enviado a PACS]
+  K --> N[Infusion completada - alta ambulatoria]
+  L --> O[Resultado disponible en sistema]
+  M --> O
+  O --> Q[Secretaria sube resultado a Connect]
+  Q --> R[Paciente recibe resultado por WhatsApp]
+  N --> S[Paciente sale de la clinica]
+  R --> S
+  style F fill:#E8F4F3,stroke:#00857C
+  style R fill:#DCF8C6,stroke:#25D366
+    </div></div>
+
+    <table>
+      <tr><th>Etapa</th><th>Responsable</th><th>Herramienta</th><th>Duración esperada</th></tr>
+      <tr><td>Agendado</td><td>Bot / Secretaria</td><td>WhatsApp / Connect</td><td>2–5 min</td></tr>
+      <tr><td>Pre-autorización</td><td>Secretaria</td><td>Connect + aseguradora</td><td>&lt;24 h antes</td></tr>
+      <tr><td>Recordatorio</td><td>Bot automático</td><td>WhatsApp HSM</td><td>T-24h y T-2h</td></tr>
+      <tr><td>Check-in</td><td>Paciente / Bot</td><td>WhatsApp</td><td>&lt;30 s</td></tr>
+      <tr><td>Recepción clínica</td><td>Recepcionista</td><td>Connect</td><td>&lt;3 min</td></tr>
+      <tr><td>Espera en sala</td><td>—</td><td>—</td><td>&lt;15 min (meta)</td></tr>
+      <tr><td>Servicio clínico</td><td>Técnico / Enfermero</td><td>Equipo clínico</td><td>Variable</td></tr>
+      <tr><td>Resultado / Alta</td><td>Secretaria + Bot</td><td>Connect + WhatsApp</td><td>&lt;5 min post-servicio</td></tr>
+    </table>
+
+    <div class="callout"><strong>Principios de experiencia no negociables:</strong><br>
+    1. El paciente no espera más de 15 min antes de ser atendido.<br>
+    2. El paciente nunca gestiona papelería de aseguradora — la absorbe la clínica.<br>
+    3. El resultado llega por WhatsApp sin que el paciente lo solicite.<br>
+    4. El ambiente no debe sentirse como hospital: luz natural, silencio controlado, sillones cómodos.<br>
+    5. En caso de complicación, el protocolo de escalación al hub toma menos de 10 min.
+    </div>
+
+    <details><summary>Edge cases &amp; manejo</summary>
+    <table>
+      <tr><th>#</th><th>Caso</th><th>Manejo</th></tr>
+      <tr><td>E1</td><td>Paciente llega sin cita (walk-in)</td><td>Secretaria verifica disponibilidad y crea cita en el momento</td></tr>
+      <tr><td>E2</td><td>Paciente llega sin ayuno o preparación</td><td>Informar y ofrecer reagendar mismo día si hay slot</td></tr>
+      <tr><td>E3</td><td>Complicación durante infusión</td><td>Activar protocolo de escalación al hub hospitalario</td></tr>
+      <tr><td>E4</td><td>Equipo no disponible (falla técnica de imagen)</td><td>Reagendar con disculpa + prioridad en próximo slot</td></tr>
+      <tr><td>E5</td><td>Resultado del lab tarda más de lo previsto</td><td>Notificar al paciente el retraso por WhatsApp</td></tr>
+      <tr><td>E6</td><td>Paciente quiere resultados impresos</td><td>Recepción imprime en el momento</td></tr>
+    </table>
+    </details>
+
+    <div class="stats">
+      <div class="stat"><div class="val">&gt;80</div><div class="lbl">NPS objetivo al salir</div></div>
+      <div class="stat"><div class="val">&lt;15 min</div><div class="lbl">Espera en sala (p90)</div></div>
+      <div class="stat"><div class="val">&lt;2 h</div><div class="lbl">Resultado lab por WhatsApp</div></div>
+      <div class="stat"><div class="val">&lt;10%</div><div class="lbl">No-show rate objetivo</div></div>
+    </div>
+  </section>
+
+  <!-- CL2 Organic -->
+  <section class="journey" id="cl2">
+    <h2><span class="num special">CL2</span> Variante Organic — dentro del hospital</h2>
+    <p class="purpose">Zona ambulatoria dedicada dentro de un Hospital Muguerza existente. Entrada independiente, diseño interior diferenciado, personal propio. Escalación clínica sin ambulancia: traslado interno directo.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente llega al hospital Muguerza] --> B{Ambulatorio o hospital general?}
+  B -->|Ambulatorio| C[Toma entrada independiente senalizada]
+  B -->|Hospital general| D[Recepcion general redirige a ambulatorio]
+  C --> E[Check-in en recepcion o via WhatsApp previo]
+  D --> E
+  E --> F[Validacion de cita y pre-auth en Connect]
+  F --> G[Sala de espera - ambiente clinica no hospital]
+  G --> H[Servicio clinico en area dedicada]
+  H --> I{Requiere escalacion?}
+  I -->|No| J[Alta ambulatoria y resultado por WhatsApp]
+  I -->|Si| K[Traslado directo al piso hospitalario]
+  K --> L[Atencion hospitalaria sin re-ingreso administrativo]
+  J --> M[Paciente sale por salida ambulatoria]
+  style G fill:#E8F4F3,stroke:#00857C
+  style K fill:#FFF3DD,stroke:#E8A33D
+    </div></div>
+
+    <div class="two-col">
+      <table>
+        <tr><th>Aspecto</th><th>Variante Organic</th></tr>
+        <tr><td>Capex</td><td>Bajo — solo adaptación de área existente</td></tr>
+        <tr><td>Escalación clínica</td><td>Traslado interno &lt;10 min, sin ambulancia</td></tr>
+        <tr><td>Identidad visual</td><td>Muguerza Ambulatorio — [Hospital]</td></tr>
+        <tr><td>Personal</td><td>Propio, acceso a servicios del hospital en emergencia</td></tr>
+      </table>
+      <table>
+        <tr><th>Riesgo</th><th>Mitigación</th></tr>
+        <tr><td>Flujos mezclados con hospitalario</td><td>Señalización estricta, entradas separadas</td></tr>
+        <tr><td>Se siente como hospital</td><td>Diseño interior radicalmente distinto</td></tr>
+        <tr><td>Demoras por recursos compartidos</td><td>Equipos dedicados al ambulatorio en horario operativo</td></tr>
+      </table>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="val">&lt;10 min</div><div class="lbl">Escalación a hospitalización</div></div>
+      <div class="stat"><div class="val">&gt;70%</div><div class="lbl">Utilización área en horario operativo</div></div>
+    </div>
+  </section>
+
+  <!-- CL3 Inorganic Saltillo -->
+  <section class="journey" id="cl3">
+    <h2><span class="num special">CL3</span> Variante Inorganic — Spoke Saltillo</h2>
+    <p class="purpose">Clínica ambulatoria greenfield en Saltillo. Espacio arrendado, diseñado desde cero, con Hospital Muguerza Saltillo como hub de escalación (traslado &lt;20 min). Modelo 100% asset-light.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente de Saltillo agenda via WhatsApp] --> B[Confirmacion y pre-auth por equipo Connect]
+  B --> C[Recordatorio T-24h con direccion del spoke Saltillo]
+  C --> D[Paciente llega al Spoke Saltillo]
+  D --> E[Check-in en recepcion o via WhatsApp]
+  E --> F[Sala de espera - ambiente clinica de especialidad]
+  F --> G[Servicio clinico en area dedicada]
+  G --> H{Requiere escalacion clinica?}
+  H -->|No| I[Alta ambulatoria y resultado por WhatsApp]
+  H -->|Si| J[Protocolo traslado a Hospital Muguerza Saltillo]
+  J --> K[Traslado coordinado - maximo 20 min]
+  K --> L[Ingreso en hub con expediente disponible en Connect]
+  I --> M[Paciente sale del spoke]
+  style F fill:#FFF8EC,stroke:#E8A33D
+  style J fill:#FDECEC,stroke:#D64545
+    </div></div>
+
+    <h3 style="margin:24px 0 8px;font-size:16px;">Protocolo de escalación clínica</h3>
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Evento clinico en spoke] --> B[Enfermero activa protocolo]
+  B --> C[Llamada a Hospital Muguerza Saltillo - linea directa]
+  C --> D[Preparar paciente para traslado]
+  D --> E{Estabilidad del paciente}
+  E -->|Estable| F[Traslado en vehiculo con acompanante clinico]
+  E -->|Inestable| G[Llamar 911 y notificar hospital hub]
+  F --> H[Llegada a hub en maximo 20 min]
+  G --> H
+  H --> I[Recepcion en urgencias con expediente de Connect]
+  style G fill:#FDECEC,stroke:#D64545
+  style H fill:#E8F4F3,stroke:#00857C
+    </div></div>
+
+    <div class="two-col">
+      <table>
+        <tr><th>Aspecto</th><th>Spoke Saltillo</th></tr>
+        <tr><td>CAPEX</td><td>100% leasing — espacio, equipo, tecnología</td></tr>
+        <tr><td>Mercado</td><td>Saltillo — nuevo mercado para CEI</td></tr>
+        <tr><td>Servicios v1</td><td>Infusiones, laboratorio, imagen básica</td></tr>
+        <tr><td>Escalación</td><td>Traslado externo al hub &lt;20 min</td></tr>
+      </table>
+      <table>
+        <tr><th>Riesgo</th><th>Mitigación</th></tr>
+        <tr><td>Mercado desconocido en Saltillo</td><td>Análisis de demanda + alianzas con médicos locales</td></tr>
+        <tr><td>Escalación más lenta que organic</td><td>Protocolos de traslado pre-acordados, simulacros</td></tr>
+        <tr><td>Bajo volumen inicial</td><td>Leasing permite ajustar capacidad</td></tr>
+        <tr><td>Marca desconocida en Saltillo</td><td>Campaña local + red de médicos referentes</td></tr>
+      </table>
+    </div>
+
+    <h3 style="margin:24px 0 8px;font-size:16px;">Hitos del modelo de negocio</h3>
+    <table>
+      <tr><th>Hito</th><th>Métrica</th><th>Plazo estimado</th></tr>
+      <tr><td>Break-even operativo</td><td>60–70% de ocupación</td><td>6–12 meses post-apertura</td></tr>
+      <tr><td>Volumen mínimo viable</td><td>25 pacientes / día</td><td>Mes 3</td></tr>
+      <tr><td>NPS objetivo</td><td>&gt;80</td><td>Mes 6</td></tr>
+      <tr><td>Expansión a segundo spoke</td><td>Según resultados Saltillo</td><td>Año 2</td></tr>
+    </table>
+  </section>
+<footer>Muguerza Connect · CEI Ambulatory Strategy · v1 · 2026-05-25</footer>
+</main>
+</div>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#E8F4F3',
+      primaryTextColor: '#1A2E2C',
+      primaryBorderColor: '#00857C',
+      lineColor: '#5C6F6D',
+      secondaryColor: '#FFF8EC',
+      tertiaryColor: '#FAFCFB',
+      fontSize: '14px',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    },
+    flowchart: { curve: 'basis', padding: 18, nodeSpacing: 50, rankSpacing: 55 }
+  });
+</script>
+</body>
+</html>

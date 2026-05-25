@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muguerza Concierge · Journey WhatsApp v1</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --primary: #00857C;
+    --primary-dark: #005A54;
+    --primary-light: #E8F4F3;
+    --accent: #F4B942;
+    --bg: #F7F9FA;
+    --surface: #FFFFFF;
+    --text: #1A2E2C;
+    --text-muted: #5C6F6D;
+    --border: #E1E8E7;
+    --whatsapp: #25D366;
+    --whatsapp-bg: #DCF8C6;
+    --bot-bg: #FFFFFF;
+    --danger: #D64545;
+    --warning: #E8A33D;
+    --success: #2DA771;
+    --shadow: 0 2px 8px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  /* Layout */
+  .app {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+  /* Sidebar */
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    background: linear-gradient(180deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 28px 22px;
+    overflow-y: auto;
+  }
+  .sidebar h1 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .sidebar .subtitle {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+  .sidebar nav { display: flex; flex-direction: column; gap: 2px; }
+  .sidebar nav a {
+    color: white;
+    text-decoration: none;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    opacity: 0.85;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+  .sidebar nav a:hover { background: rgba(255,255,255,0.1); opacity: 1; }
+  .sidebar nav a .num {
+    display: inline-block;
+    width: 24px;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.6;
+    font-weight: 600;
+  }
+  .sidebar .meta {
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 12px;
+    opacity: 0.75;
+    line-height: 1.7;
+  }
+  .sidebar .meta strong { display: block; margin-top: 8px; color: #fff; opacity: 1; }
+  .sidebar .back {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: white;
+    opacity: 0.7;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .sidebar .back:hover { opacity: 1; }
+  .nav-group {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    padding: 14px 12px 4px;
+    margin-top: 4px;
+  }
+  /* Main */
+  main { padding: 48px 60px 80px; max-width: 1100px; }
+  .hero {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 40px 44px;
+    margin-bottom: 36px;
+    box-shadow: var(--shadow);
+    border-left: 6px solid var(--whatsapp);
+  }
+  .hero .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--whatsapp);
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    margin: 0 0 12px;
+    font-size: 34px;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+  }
+  .hero p.lead { font-size: 16px; color: var(--text-muted); margin: 0; max-width: 720px; }
+  .hero .badges { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .badge.warn { background: #FFF3DD; color: #8A5A00; }
+  .badge.danger { background: #FCE8E8; color: var(--danger); }
+
+  /* Sections */
+  section.journey {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 32px 36px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow);
+    scroll-margin-top: 20px;
+  }
+  section.journey h2 {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 8px;
+    font-size: 22px;
+    letter-spacing: -0.3px;
+  }
+  section.journey h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  section.journey h2 .num.special { background: var(--accent); color: var(--text); }
+  section.journey > p.purpose {
+    color: var(--text-muted);
+    margin: 0 0 24px;
+    font-size: 14.5px;
+    padding-left: 50px;
+  }
+  /* Mermaid wrap */
+  .diagram {
+    background: linear-gradient(135deg, #FAFCFB, #F2F7F6);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    margin: 18px 0 22px;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .mermaid { font-family: inherit !important; min-width: 100%; }
+  /* Chat preview */
+  .chat-preview {
+    background: #ECE5DD;
+    border-radius: 10px;
+    padding: 18px;
+    margin: 16px 0;
+    border: 1px solid var(--border);
+  }
+  .chat-preview .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .bubble {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.45;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+  .bubble.bot {
+    background: var(--bot-bg);
+    border-top-left-radius: 0;
+    margin-right: auto;
+  }
+  .bubble.patient {
+    background: var(--whatsapp-bg);
+    border-top-right-radius: 0;
+    margin-left: auto;
+    text-align: left;
+  }
+  .bubble .author {
+    display: block;
+    font-size: 11px;
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .bubble.patient .author { color: #075E54; }
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+  /* Details */
+  details {
+    background: #FAFCFB;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 12px 0;
+  }
+  details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary-dark);
+    font-size: 14px;
+    user-select: none;
+  }
+  details[open] summary { margin-bottom: 10px; }
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 13.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--primary-light);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  td code {
+    background: #F1F5F4;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: var(--primary-dark);
+  }
+  /* Callouts */
+  .callout {
+    border-left: 4px solid var(--primary);
+    background: var(--primary-light);
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  .callout.warn { border-color: var(--warning); background: #FFF8EC; }
+  .callout.danger { border-color: var(--danger); background: #FDECEC; }
+  .callout strong { color: var(--primary-dark); }
+  .callout.warn strong { color: #8A5A00; }
+  .callout.danger strong { color: var(--danger); }
+  /* Stats */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
+  .stat {
+    background: var(--primary-light);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat .val { font-size: 22px; font-weight: 700; color: var(--primary-dark); }
+  .stat .lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+  /* Footer */
+  footer { text-align: center; color: var(--text-muted); font-size: 12px; padding: 30px 0 10px; }
+  @media (max-width: 800px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar { position: relative; height: auto; }
+    main { padding: 24px 20px; }
+    .hero { padding: 24px; }
+    section.journey { padding: 22px 20px; }
+  }
+  @media print {
+    .sidebar { display: none; }
+    .app { grid-template-columns: 1fr; }
+    section.journey { break-inside: avoid; box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+<aside class="sidebar">
+  <a href="index.html" class="back">← Volver al índice</a>
+  <h1>Muguerza Concierge</h1>
+  <div class="subtitle">WhatsApp Journey · v1</div>
+  <nav>
+    <a href="#s1"><span class="num">01</span> Contacto inicial</a>
+    <a href="#s2"><span class="num">02</span> Identificación</a>
+    <a href="#s3"><span class="num">03</span> Menú y enrutamiento</a>
+    <a href="#s4"><span class="num">04</span> Agendamiento</a>
+    <a href="#s5"><span class="num">05</span> Cotización</a>
+    <a href="#s6"><span class="num">06</span> Reagendar / cancelar</a>
+    <a href="#s7"><span class="num">07</span> Intake de documentos</a>
+    <a href="#s8"><span class="num">08</span> Recordatorios</a>
+    <a href="#s9"><span class="num">09</span> Check-in</a>
+    <a href="#s10"><span class="num">10</span> Resultados</a>
+    <a href="#s11"><span class="num">11</span> FAQ</a>
+    <a href="#s12"><span class="num">12</span> Escalación humano</a>
+    <a href="#kpi"><span class="num">📈</span> KPIs v1</a>
+  </nav>
+  <div class="meta">
+    <strong>Proyecto</strong> CEI Ambulatory Strategy
+    <strong>Actor</strong> Paciente
+    <strong>Versión</strong> v1 · 2026-05-25
+  </div>
+</aside>
+
+<main>
+  <div class="hero">
+    <div class="eyebrow">Customer-facing bot</div>
+    <h1>Muguerza Concierge — Journey de WhatsApp</h1>
+    <p class="lead">Bot de WhatsApp Business para pacientes ambulatorios. Resuelve front-desk (agendar, cotizar, recordar, resultados, intake) sin saturar a la secretaria, y escala con limpieza cuando se necesita humano.</p>
+    <div class="badges">
+      <span class="badge">Servicios v1: Infusión · Laboratorio · Imagen</span>
+      <span class="badge">Identificación: por teléfono</span>
+      <span class="badge warn">Aseguradoras: fuera del bot</span>
+      <span class="badge warn">Consultas / cirugía: vía secretaria</span>
+    </div>
+  </div>
+
+  <!-- ============ 01 CONTACTO INICIAL ============ -->
+  <section class="journey" id="s1">
+    <h2><span class="num">1</span> Contacto inicial</h2>
+    <p class="purpose">El paciente abre WhatsApp y escribe a Muguerza. Es la puerta de entrada de todo el modelo: sin app, sin registro previo.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  P([📱 Paciente]) -->|primer mensaje| W[WhatsApp Business API]
+  W --> WH{Webhook}
+  WH -->|crea contexto| CTX[Conversation<br/>context]
+  CTX --> ID[Sección 02:<br/>Identificación]
+  style P fill:#DCF8C6,stroke:#25D366,color:#1A2E2C
+  style W fill:#25D366,stroke:#075E54,color:#fff
+  style ID fill:#00857C,stroke:#005A54,color:#fff
+    </div></div>
+
+    <div class="callout"><strong>Premisa de diseño:</strong> el paciente nunca tiene que descargar app, registrarse en un portal o crear contraseña. WhatsApp = la única puerta digital.</div>
+  </section>
+
+  <!-- ============ 02 IDENTIFICACIÓN ============ -->
+  <section class="journey" id="s2">
+    <h2><span class="num">2</span> Identificación automática y alta de expediente</h2>
+    <p class="purpose">Si el teléfono ya existe en <code>patients</code>, saludo personalizado. Si no, se crea expediente automáticamente con teléfono + nombre.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Mensaje entrante] --> B{phone existe<br/>en patients?}
+  B -->|Sí| C[Cargar name + última cita]
+  B -->|No| D[Insert patient con<br/>phone + source=whatsapp]
+  D --> E[Pedir nombre completo]
+  E --> F{Nombre válido?}
+  F -->|Sí| G[Update name]
+  F -->|No| H[Reintento x2]
+  H -.->|falla| ESC[Escalacion - Sec.12]
+  C --> M[Seccion 03 - Menu]
+  G --> M
+  style D fill:#FFF3DD,stroke:#E8A33D
+  style ESC fill:#FDECEC,stroke:#D64545,color:#D64545
+  style M fill:#00857C,stroke:#005A54,color:#fff
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="label">Paciente nuevo</div>
+      <div class="bubble bot"><span class="author">Concierge</span>¡Hola! 👋 Soy Concierge, el asistente de Muguerza Ambulatorio. Para crear tu expediente, ¿me dices tu <b>nombre completo</b>?</div>
+      <div class="bubble patient"><span class="author">Ana</span>Ana López Treviño</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Gracias, Ana. Ya quedó tu expediente. ¿En qué te ayudo hoy?</div>
+    </div>
+
+    <div class="chat-preview">
+      <div class="label">Paciente recurrente</div>
+      <div class="bubble bot"><span class="author">Concierge</span>¡Hola, Ana! 👋 Soy Concierge, tu asistente de Muguerza. ¿En qué te ayudo hoy?</div>
+    </div>
+
+    <details>
+      <summary>Edge cases &amp; manejo</summary>
+      <table>
+        <tr><th>Caso</th><th>Manejo</th></tr>
+        <tr><td>Número de grupo / lista de difusión</td><td>Ignorar, no crear expediente</td></tr>
+        <tr><td>Nombre con basura (números, emojis)</td><td>Reintento x2 → handoff</td></tr>
+        <tr><td>Paciente existe pero <code>name</code> vacío</td><td>Tratar como nuevo y pedir nombre</td></tr>
+        <tr><td>Teléfono familiar (mamá + hijo)</td><td>v1: phone = único. Sub-perfiles → v2</td></tr>
+        <tr><td>Mensaje inicial es audio/imagen</td><td>Pedir explícitamente texto para identificarse</td></tr>
+      </table>
+    </details>
+  </section>
+
+  <!-- ============ 03 MENÚ ============ -->
+  <section class="journey" id="s3">
+    <h2><span class="num">3</span> Menú principal y enrutamiento</h2>
+    <p class="purpose">Pantalla única que orienta al paciente hacia el sub-flow correcto. NLU light: acepta número o texto natural ("agenda", "cuánto cuesta", "ya llegué").</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  M[Menú principal] --> O1[1️⃣ Agendar cita]
+  M --> O2[2️⃣ Cotizar servicio]
+  M --> O3[3️⃣ Reagendar/cancelar]
+  M --> O4[4️⃣ Mis resultados]
+  M --> O5[5️⃣ Enviar documento]
+  M --> O6[6️⃣ Ya llegué]
+  M --> O7[7️⃣ Info/FAQ]
+  M --> O8[8️⃣ Hablar con persona]
+  O1 --> S4[Sección 04]
+  O2 --> S5[Sección 05]
+  O3 --> S6[Sección 06]
+  O4 --> S10[Sección 10]
+  O5 --> S7[Sección 07]
+  O6 --> S9[Sección 09]
+  O7 --> S11[Sección 11]
+  O8 --> S12[Sección 12]
+  style M fill:#00857C,stroke:#005A54,color:#fff
+  style S12 fill:#F4B942,stroke:#B17B00
+    </div></div>
+
+    <div class="callout warn"><strong>Regla dura:</strong> cualquier mención de aseguradora ("¿me cubre GNP?", "tengo Axxa") salta directo a Sección 12 sin pasar por el menú. El bot v1 no toca pólizas.</div>
+  </section>
+
+  <!-- ============ 04 AGENDAMIENTO ============ -->
+  <section class="journey" id="s4">
+    <h2><span class="num">4</span> Agendamiento (infusión · lab · imagen)</h2>
+    <p class="purpose">Slot real-time desde <code>availability_slots</code>. Bot pregunta servicio → clínica → horario. Crea <code>appointment</code> con lock optimista.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Categoría:<br/>Infusión / Lab / Imagen] --> B[Servicio del catálogo]
+  B --> C{Requiere<br/>receta?}
+  C -->|Sí| D[Pedir foto o PDF - Sec.07]
+  C -->|No| E[Mostrar 3 clínicas]
+  D --> E
+  E --> F[Paciente elige clínica]
+  F --> G[Mostrar top-3 slots]
+  G --> H[Paciente elige slot]
+  H --> I{Slot aún libre?}
+  I -->|No| G
+  I -->|Sí| J[Insert appointment +<br/>update slot.status=reserved]
+  J --> K[Confirmación + indicaciones<br/>de preparación]
+  K --> L[Sec.08 - Recordatorios]
+  style J fill:#DCF8C6,stroke:#25D366
+  style I fill:#FFF3DD,stroke:#E8A33D
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="bubble bot"><span class="author">Concierge</span>¿Qué tipo de servicio buscas?
+1️⃣ Infusión
+2️⃣ Laboratorio
+3️⃣ Imagen (rayos X, ultrasonido, tomografía, resonancia)</div>
+      <div class="bubble patient"><span class="author">Ana</span>2</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Perfecto. Algunos paneles comunes:
+• Química sanguínea 27 — $890
+• Biometría hemática — $320
+• Perfil tiroideo — $1,250
+• Otro (escríbeme cuál)</div>
+      <div class="bubble patient"><span class="author">Ana</span>química 27</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Requiere <b>ayuno de 8 h</b>. Estas son nuestras clínicas:
+📍 Muguerza Alta Especialidad
+📍 Muguerza Sur
+📍 Spoke Saltillo
+¿Cuál te queda mejor?</div>
+      <div class="bubble patient"><span class="author">Ana</span>Sur</div>
+      <div class="bubble bot"><span class="author">Concierge</span>🕗 Mié 27 may · 7:30 a.m.
+🕘 Jue 28 may · 8:00 a.m.
+🕗 Vie 29 may · 7:00 a.m.</div>
+      <div class="bubble patient"><span class="author">Ana</span>1</div>
+      <div class="bubble bot"><span class="author">Concierge</span>✅ Cita confirmada
+📅 Mié 27 may · 7:30 a.m. — Muguerza Sur
+⚠️ Recuerda llegar en ayuno de 8 h.</div>
+    </div>
+
+    <details><summary>Edge cases &amp; manejo</summary>
+    <table>
+      <tr><th>Caso</th><th>Manejo</th></tr>
+      <tr><td>Servicio fuera de catálogo bot (cirugía, consulta)</td><td>→ Sección 12</td></tr>
+      <tr><td>Sin slots en 7 días</td><td>Sugerir otra clínica o ampliar fechas</td></tr>
+      <tr><td>Race condition: slot ocupado entre mostrar y elegir</td><td>Lock optimista: <code>update ... where status='free'</code>; 0 filas → re-mostrar</td></tr>
+      <tr><td>Paciente menor de edad</td><td>Pedir tutor + handoff</td></tr>
+      <tr><td>Receta no enviada en 3 min</td><td><code>appointment.status='pending_document'</code>, cancelar en 24h si no sube</td></tr>
+    </table>
+    </details>
+  </section>
+
+  <!-- ============ 05 COTIZACIÓN ============ -->
+  <section class="journey" id="s5">
+    <h2><span class="num">5</span> Cotización (precio privado)</h2>
+    <p class="purpose">Precio público sin aseguradora, en segundos. Si paciente menciona seguro → escalación inmediata.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  A[Paciente pregunta cuanto cuesta] --> B[Buscar en services y aliases]
+  B --> C{Match}
+  C -->|Único| D[Precio por clínica]
+  C -->|Múltiples| E[Pedir desambiguación]
+  C -->|Ninguno| F[Sec.12 - Escalacion]
+  E --> D
+  D --> G{Agendar ahora?}
+  G -->|Sí| H[Sec.04 - Agendar]
+  G -->|No| I[Cerrar]
+  style F fill:#F4B942,stroke:#B17B00
+  style H fill:#00857C,stroke:#005A54,color:#fff
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="bubble patient"><span class="author">Ana</span>cuanto cuesta una resonancia de rodilla</div>
+      <div class="bubble bot"><span class="author">Concierge</span>🩻 Resonancia magnética de rodilla (sin contraste)
+• Muguerza Alta Especialidad: $6,800
+• Muguerza Sur: $6,500
+• Spoke Saltillo: $5,900
+
+<i>Precios privados. Si vas con aseguradora, te paso con el equipo.</i>
+¿Quieres <b>agendar</b> ahora?</div>
+    </div>
+  </section>
+
+  <!-- ============ 06 REAGENDAR ============ -->
+  <section class="journey" id="s6">
+    <h2><span class="num">6</span> Reagendar / cancelar</h2>
+    <p class="purpose">Modificar citas futuras. Libera slot, reserva nuevo si reagenda, registra <code>cancellation_log</code>.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente: reagendar / cancelar] --> B[Listar appointments futuros]
+  B --> C{Cuántas?}
+  C -->|1| D[Usar esa]
+  C -->|Varias| E[Elegir cual]
+  D --> F{Acción}
+  E --> F
+  F -->|Cancelar| G[Confirmación]
+  F -->|Reagendar| H[Mostrar nuevos slots]
+  G --> I{Menos de 24h?}
+  I -->|Sí| J[Aplicar política tardía]
+  I -->|No| K[Update appointment + liberar slot]
+  J --> K
+  H --> L[Elegir nuevo slot]
+  L --> M[Liberar viejo + reservar nuevo]
+  K --> N[Notificar paciente]
+  M --> N
+  style J fill:#FFF3DD,stroke:#E8A33D
+    </div></div>
+
+    <details><summary>Edge cases &amp; manejo</summary>
+    <table>
+      <tr><th>Caso</th><th>Manejo</th></tr>
+      <tr><td>Sin citas futuras</td><td>Bot: "No veo citas próximas, ¿quieres agendar?"</td></tr>
+      <tr><td>Cita ya <code>checked_in</code> o <code>completed</code></td><td>→ Sección 12</td></tr>
+      <tr><td>Cita es parte de serie recurrente</td><td>v1: solo la instancia; serie completa → handoff</td></tr>
+      <tr><td>Race condition con secretaria</td><td><code>update where status='confirmed'</code>; 0 filas → refrescar</td></tr>
+    </table>
+    </details>
+  </section>
+
+  <!-- ============ 07 INTAKE DOCS ============ -->
+  <section class="journey" id="s7">
+    <h2><span class="num">7</span> Intake de documentos (PDF / foto → Supabase)</h2>
+    <p class="purpose">Paciente sube documento por WhatsApp, bot lo descarga y lo guarda en Storage. <b>La interpretación es humana</b> — el bot solo recibe y etiqueta tentativamente.</p>
+
+    <div class="callout"><strong>Caso del usuario:</strong> "sería relativamente fácil que cuando se envíe un PDF que se guarde directamente en la base de Supabase". ✅ Este es ese flow.</div>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente envia PDF o imagen] --> B{Tipo y tamano valido?}
+  B -->|No| C[Rechazar con motivo]
+  B -->|Sí| D[Descargar media de WA API]
+  D --> E[Upload a Storage<br/>patient-documents/ID/]
+  E --> F[Insert patient_documents<br/>status=pending_review]
+  F --> G[Bot pregunta categoría]
+  G --> H{Categoría}
+  H -->|Receta| I1
+  H -->|INE| I2
+  H -->|Póliza| I3
+  H -->|Estudio previo| I4
+  H -->|Otro| I5
+  I1 --> J[Update category + crear tarea<br/>en CRM secretaría]
+  I2 --> J
+  I3 --> J
+  I4 --> J
+  I5 --> J
+  J --> K[Bot confirma recepción]
+  style E fill:#DCF8C6,stroke:#25D366
+  style J fill:#00857C,stroke:#005A54,color:#fff
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="bubble patient"><span class="author">Ana</span>📎 receta_dr_garcia.pdf</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Recibí tu documento 📄 (receta_dr_garcia.pdf · 1.2 MB).
+¿Qué es?
+1️⃣ Receta médica
+2️⃣ INE
+3️⃣ Póliza
+4️⃣ Estudio previo
+5️⃣ Otro</div>
+      <div class="bubble patient"><span class="author">Ana</span>1</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Listo, lo guardé como <b>receta médica</b>. El equipo lo revisa y lo asocia a tu expediente.</div>
+    </div>
+  </section>
+
+  <!-- ============ 08 RECORDATORIOS ============ -->
+  <section class="journey" id="s8">
+    <h2><span class="num">8</span> Recordatorios automáticos (outbound)</h2>
+    <p class="purpose">Plantilla HSM T-24h y T-2h. Reducir no-shows. Botones rápidos para confirmar/reagendar/cancelar sin escribir.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  CR[⏰ Cron cada 10 min] --> Q[Query appointments<br/>en T-24h ±10min<br/>sin reminder enviado]
+  Q --> S[Enviar plantilla HSM<br/>personalizada]
+  S --> U[Update reminder_24h_sent_at]
+  U --> R{Respuesta del<br/>paciente?}
+  R -->|1 Confirmar| C[Update confirmed_at]
+  R -->|2 Reagendar| RE[Sec.06 - Reagendar]
+  R -->|3 Cancelar| CA[Sec.06 - Cancelar]
+  R -->|Sin respuesta| W[Esperar T-2h]
+  C --> T2[⏰ T-2h:<br/>recordatorio final]
+  W --> T2
+  style S fill:#25D366,stroke:#075E54,color:#fff
+  style T2 fill:#25D366,stroke:#075E54,color:#fff
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="label">Plantilla HSM · T-24h</div>
+      <div class="bubble bot"><span class="author">Concierge</span>Hola Ana 👋 Te recuerdo tu cita de mañana:
+📅 <b>Mié 27 may · 7:30 a.m.</b>
+🧪 Química sanguínea 27
+📍 Muguerza Sur
+⚠️ Llega en ayuno de 8 h.
+
+1️⃣ Confirmar  2️⃣ Reagendar  3️⃣ Cancelar</div>
+    </div>
+  </section>
+
+  <!-- ============ 09 CHECK-IN ============ -->
+  <section class="journey" id="s9">
+    <h2><span class="num">9</span> Check-in de llegada</h2>
+    <p class="purpose">"Ya llegué" desde WhatsApp → registra arribo, da posición en fila, evita el cuello de botella en recepción.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Paciente avisa llegada o boton T-2h] --> B[Buscar cita ±60min]
+  B --> C{Encontrada?}
+  C -->|No| D[Bot informa sin cita proxima]
+  C -->|Sí| E{Tarde mas de 30min?}
+  E -->|Sí| ESC[Sec.12 - Escalacion]
+  E -->|No| F[Update appointment<br/>status=checked_in]
+  F --> G[Insert clinic_queues]
+  G --> H[Mensaje: sala + posición + ETA]
+  H --> I[Notificar a CRM:<br/>paciente llegó]
+  style F fill:#DCF8C6,stroke:#25D366
+  style ESC fill:#F4B942,stroke:#B17B00
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="bubble patient"><span class="author">Ana</span>ya llegué</div>
+      <div class="bubble bot"><span class="author">Concierge</span>¡Bienvenida, Ana! ✅
+Registrada para tu cita de <b>Química 27 — 7:30 a.m.</b>
+📍 Pasa a Sala B (planta baja)
+Eres la 2da en fila · ETA 8 min</div>
+    </div>
+  </section>
+
+  <!-- ============ 10 RESULTADOS ============ -->
+  <section class="journey" id="s10">
+    <h2><span class="num">10</span> Entrega de resultados</h2>
+    <p class="purpose">Cuando la secretaria sube el resultado al CRM (Sección 04 de Connect), el bot lo entrega al paciente al instante con signed URL.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart LR
+  A[Result subido<br/>en CRM] --> B{critical?}
+  B -->|Sí| BLK[NO entregar - llamar al paciente]
+  B -->|No| C[Trigger / webhook]
+  C --> D[Generar signed URL<br/>TTL 7 días]
+  D --> E[Enviar PDF + texto]
+  E --> F[Update notified_at]
+  F --> G{Paciente abre?}
+  G -->|Sí| H[Update viewed_at]
+  G -->|Pregunta clínica| ESC[Sec.12 - Escalacion]
+  style BLK fill:#FDECEC,stroke:#D64545,color:#D64545
+  style ESC fill:#F4B942,stroke:#B17B00
+    </div></div>
+
+    <div class="callout danger"><strong>Regla dura:</strong> resultados marcados <code>critical=true</code> no se entregan por bot. Se bloquean y se dispara protocolo de contacto telefónico humano.</div>
+  </section>
+
+  <!-- ============ 11 FAQ ============ -->
+  <section class="journey" id="s11">
+    <h2><span class="num">11</span> FAQ (ubicación · horarios · estacionamiento)</h2>
+    <p class="purpose">Catálogo estático para preguntas informativas. Bot NO contesta preguntas clínicas, NO contesta sobre aseguradora, NO inventa.</p>
+
+    <div class="two-col">
+      <table>
+        <tr><th>Intent</th><th>Tipo de respuesta</th></tr>
+        <tr><td>Ubicación / cómo llegar</td><td>Lista + Maps URL</td></tr>
+        <tr><td>Horarios</td><td>Por clínica</td></tr>
+        <tr><td>Estacionamiento</td><td>Info por clínica</td></tr>
+        <tr><td>Formas de pago</td><td>Lista</td></tr>
+        <tr><td>Accesibilidad</td><td>Info por clínica</td></tr>
+        <tr><td>Tiempos de espera</td><td>Promedio por servicio</td></tr>
+        <tr><td>Qué llevar</td><td>Por servicio</td></tr>
+        <tr><td>Ayuno</td><td>Por servicio</td></tr>
+      </table>
+      <table>
+        <tr><th>Pregunta</th><th>Respuesta del bot</th></tr>
+        <tr><td>¿Aceptan GNP?</td><td>→ Sección 12 (handoff)</td></tr>
+        <tr><td>Me duele algo</td><td>→ Sección 12 + aviso urgencias</td></tr>
+        <tr><td>¿Cuánto cuesta X?</td><td>→ Sección 05</td></tr>
+        <tr><td>¿Qué médico recomiendan?</td><td>→ Sección 12</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 12 ESCALACIÓN ============ -->
+  <section class="journey" id="s12">
+    <h2><span class="num special">!</span> Escalación a humano (transversal)</h2>
+    <p class="purpose">Protocolo único para entregar la conversación a la secretaria. Cualquier flow termina aquí cuando aplica disparador.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  T[Flow X decide escalar] --> L[Insert handoff_log]
+  L --> U[Update conversation<br/>needs_human=true<br/>priority=urgent/alta/normal/baja]
+  U --> M[Mensaje de transicion al paciente]
+  M --> Q{Horario hábil?}
+  Q -->|Sí| A[Badge en CRM<br/>+ notificación sonora]
+  Q -->|No| W[Encolar para mañana]
+  A --> SE[Secretaria toma<br/>assigned_to = self]
+  W --> SE
+  SE --> R[Responde manual<br/>desde Connect]
+  R --> CL{Resuelto?}
+  CL -->|Sí| CLO[Close conversation]
+  CL -->|No| RE[Reasignar o etiquetar]
+  style M fill:#F4B942,stroke:#B17B00
+  style A fill:#DCF8C6,stroke:#25D366
+    </div></div>
+
+    <table>
+      <tr><th>Disparador</th><th>Prioridad</th></tr>
+      <tr><td>Petición explícita ("humano", "persona")</td><td>normal</td></tr>
+      <tr><td>Mención de aseguradora / cobertura / copago</td><td>normal</td></tr>
+      <tr><td>Servicio fuera de catálogo (cirugía, consulta)</td><td>normal</td></tr>
+      <tr><td>Documento subido (siempre va a revisión humana)</td><td>baja</td></tr>
+      <tr><td>3 intentos sin entender</td><td>normal</td></tr>
+      <tr><td>Síntoma grave / dolor intenso / sangrado</td><td><b style="color:#D64545">urgente</b></td></tr>
+      <tr><td>Lenguaje de angustia / queja seria</td><td>alta</td></tr>
+      <tr><td>Fuera de horario</td><td>encolar</td></tr>
+    </table>
+  </section>
+
+  <!-- ============ KPIs ============ -->
+  <section class="journey" id="kpi">
+    <h2><span class="num">📈</span> KPIs v1 (3 primeros meses)</h2>
+    <div class="stats">
+      <div class="stat"><div class="val">&gt;60%</div><div class="lbl">Citas agendadas por bot</div></div>
+      <div class="stat"><div class="val">&gt;85%</div><div class="lbl">FAQ resueltos sin humano</div></div>
+      <div class="stat"><div class="val">&gt;75%</div><div class="lbl">Cotizaciones sin humano</div></div>
+      <div class="stat"><div class="val">&gt;70%</div><div class="lbl">Confirmación T-24h</div></div>
+      <div class="stat"><div class="val">≥40%</div><div class="lbl">Reducción no-shows vs baseline</div></div>
+      <div class="stat"><div class="val">&lt;5min</div><div class="lbl">Primera respuesta humana (hábil)</div></div>
+      <div class="stat"><div class="val">&gt;95%</div><div class="lbl">Resultados entregados &lt;5 min</div></div>
+      <div class="stat"><div class="val">&lt;15%</div><div class="lbl">Docs rechazados por calidad</div></div>
+    </div>
+  </section>
+
+  <footer>Muguerza Connect · CEI Ambulatory Strategy · WhatsApp Concierge v1 · 2026-05-21</footer>
+</main>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#E8F4F3',
+      primaryTextColor: '#1A2E2C',
+      primaryBorderColor: '#00857C',
+      lineColor: '#5C6F6D',
+      secondaryColor: '#FFF8EC',
+      tertiaryColor: '#FAFCFB',
+      fontSize: '14px',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    },
+    flowchart: { curve: 'basis', padding: 18, nodeSpacing: 50, rankSpacing: 55 }
+  });
+</script>
+</body>
+</html>

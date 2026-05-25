@@ -85,8 +85,9 @@
   .bubble .author { display: block; font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 2px; }
   .bubble.patient .author { color: #075E54; }
   .bubble.secretary .author { color: #4A6FA5; }
-  .screen-mock { background: #1E1E2E; color: #CDD6F4; border-radius: 10px; padding: 20px 24px; margin: 16px 0; font-family: "Consolas", "Fira Code", monospace; font-size: 12.5px; line-height: 1.6; overflow-x: auto; }
-  .screen-mock .bar { background: #313244; border-radius: 6px; padding: 6px 12px; margin-bottom: 12px; font-size: 11px; color: #6C7086; }
+  .product-shot { margin: 18px 0 22px; }
+  .product-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-lg); background: #fff; }
+  .product-shot figcaption { margin-top: 10px; color: var(--text-muted); font-size: 13px; line-height: 1.45; }
   details { background: #FAFCFB; border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
   details summary { cursor: pointer; font-weight: 600; color: var(--primary-dark); font-size: 14px; user-select: none; }
   details[open] summary { margin-bottom: 10px; }
@@ -372,21 +373,12 @@ flowchart TD
   style B fill:#E8F4F3,stroke:#00857C
     </div></div>
 
-    <div class="screen-mock">
-      <div class="bar">Muguerza Connect · Dr. García &nbsp;·&nbsp; Mi agenda &nbsp;·&nbsp; Expedientes &nbsp;·&nbsp; Resultados</div>
-HOY · Miércoles 27 de mayo                                   📅 Filtrar fecha
+    <figure class="product-shot">
+      <img src="assets/dashboard-medico-connect.png" alt="Dashboard médico real de Muguerza Connect con KPIs, agenda, inbox y pendientes" loading="lazy">
+      <figcaption>Vista real del dashboard médico en Muguerza Connect: KPIs clínicos, agenda del día, inbox, alertas críticas y órdenes pendientes por firma.</figcaption>
+    </figure>
 
-  07:30  Ana López           Química 27          ✅ Confirmada
-  08:00  Carlos Ruiz         Resonancia rodilla  🕐 En espera
-  09:00  María Treviño       Infusión Herceptin  ✅ Confirmada
-  10:30  [slot disponible]
-
-────────────────────────────────────────────────────────────────
-EXPEDIENTE: Ana López
-Última visita: 15 may · Próxima: hoy 7:30
-Documentos: receta.pdf · póliza GNP · resultado_abr.pdf
-[Agregar nota]  [Ver historial completo]
-    </div>
+    <div class="callout"><strong>Lectura operativa:</strong> el dashboard funciona como centro de control diario del médico. Prioriza alertas, concentra pendientes y permite saltar rápido a pacientes, agenda, inbox, aseguradoras o métricas de práctica.</div>
 
     <div class="callout warn"><strong>El médico NO tiene acceso en v1:</strong> bandeja de WhatsApp · información financiera o de seguros · conversaciones internas del equipo · comunicación directa con el paciente.</div>
 

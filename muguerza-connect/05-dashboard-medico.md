@@ -3,9 +3,11 @@
 > **Producto:** Muguerza Connect · **Actor:** Médico · **v1**
 
 ## 1. Propósito
+
 Vista principal del médico en Connect: agenda del día, expedientes de sus pacientes y acceso a historial clínico. Sin acceso a chats de WhatsApp.
 
 ## 2. Precondiciones
+
 - Usuario con rol doctor
 - Al menos una cita asignada al médico
 
@@ -24,28 +26,13 @@ flowchart TD
   F -->|Ver resultados| J[Ver resultados subidos por secretaria]
 ```
 
-## 4. Layout del dashboard
+## 4. Referencia visual del dashboard real
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│ Muguerza Connect · Dr. García                    [Dr. García ▾]  │
-├──────────────────────────────────────────────────────────────────┤
-│  [Mi agenda]  [Expedientes]  [Resultados]                        │
-├──────────────────────────────────────────────────────────────────┤
-│  HOY · Miércoles 27 de mayo                    📅 Filtrar fecha  │
-│                                                                  │
-│  07:30  Ana López          Química 27          ✅ Confirmada     │
-│  08:00  Carlos Ruiz        Resonancia rodilla  🕐 En espera      │
-│  09:00  María Treviño      Infusión Herceptin  ✅ Confirmada     │
-│  10:30  [slot disponible]                                        │
-│                                                                  │
-│  ─────────────────────────────────────────────────────────────── │
-│  EXPEDIENTE: Ana López                                           │
-│  Última visita: 15 may · Próxima: hoy 7:30                       │
-│  Documentos: receta.pdf · póliza GNP · resultado_abr.pdf        │
-│  [Agregar nota]  [Ver historial completo]                        │
-└──────────────────────────────────────────────────────────────────┘
-```
+![Dashboard médico real de Muguerza Connect](../assets/dashboard-medico-connect.png)
+
+Vista real del dashboard médico en Muguerza Connect: KPIs clínicos, agenda del día, inbox, alertas críticas y órdenes pendientes por firma.
+
+La pantalla funciona como centro de control diario del médico. Prioriza alertas, concentra pendientes y permite saltar rápido hacia pacientes, agenda, inbox, aseguradoras o métricas de práctica.
 
 ## 5. Edge cases
 
@@ -58,16 +45,19 @@ flowchart TD
 | E5 | Médico de guardia ve pacientes de otro médico | Solo si tiene permiso de guardia habilitado por admin |
 
 ## 6. Lo que el médico NO ve en v1
+
 - Bandeja de WhatsApp (es exclusiva de secretaria)
 - Información financiera o de seguros
 - Conversaciones internas del equipo
 - Comunicación directa con el paciente (queda pendiente para v2)
 
 ## 7. Métricas de éxito
+
 - Tiempo de carga del dashboard: <2 s
 - Porcentaje de citas marcadas completadas el mismo día: >85%
 
 ## 8. Pendientes / v2
+
 - Canal de comunicación médico-paciente (opción técnica por definir)
 - Vista de pacientes con tratamiento recurrente activo
 - Notas clínicas estructuradas con plantillas por especialidad

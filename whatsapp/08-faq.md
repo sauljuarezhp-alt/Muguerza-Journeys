@@ -29,7 +29,7 @@ flowchart TD
 > **Bot:** «Tenemos varias clínicas:
 > 📍 Muguerza Alta Especialidad — Hidalgo
 > 📍 Muguerza Sur — Contry · San Pedro
-> 📍 Spoke Saltillo — Sendero
+> 📍 Spoke San Pedro — Alta Engracia
 > ¿Cuál te queda más cerca?»
 
 > **Bot (detalle):** «📍 **Muguerza Sur**

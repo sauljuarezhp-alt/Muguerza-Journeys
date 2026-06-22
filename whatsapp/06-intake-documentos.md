@@ -3,13 +3,13 @@
 > **Canal:** WhatsApp Concierge · **Actor:** Paciente · **v1**
 
 ## 1. Propósito
-Recibir documentos del paciente por WhatsApp (receta, INE, póliza, estudios previos), guardarlos en Supabase Storage automáticamente y notificar a la secretaria para validación.
+Recibir documentos del paciente por WhatsApp (receta, INE, póliza, estudios previos), guardarlos vía la API de TASI automáticamente y notificar a la secretaria para validación.
 
 > El bot solo recibe, etiqueta y guarda. La validación y procesamiento es 100% humana.
 
 ## 2. Precondiciones
 - Paciente identificado (journey 00)
-- Bucket patient-documents configurado
+- Endpoint de carga de documentos de TASI disponible
 - Tipos aceptados: PDF, JPG, PNG, máximo 10 MB
 
 ## 3. Happy path

@@ -506,7 +506,7 @@ flowchart TD
       <div class="bubble bot"><span class="author">Concierge</span>Requiere <b>ayuno de 8 h</b>. Estas son nuestras clínicas:
 📍 Muguerza Alta Especialidad
 📍 Muguerza Sur
-📍 Spoke Saltillo
+📍 Spoke San Pedro
 ¿Cuál te queda mejor?</div>
       <div class="bubble patient"><span class="author">Ana</span>Sur</div>
       <div class="bubble bot"><span class="author">Concierge</span>🕗 Mié 27 may · 7:30 a.m.
@@ -555,7 +555,7 @@ flowchart LR
       <div class="bubble bot"><span class="author">Concierge</span>🩻 Resonancia magnética de rodilla (sin contraste)
 • Muguerza Alta Especialidad: $6,800
 • Muguerza Sur: $6,500
-• Spoke Saltillo: $5,900
+• Spoke San Pedro: $5,900
 
 <i>Precios privados. Si vas con aseguradora, te paso con el equipo.</i>
 ¿Quieres <b>agendar</b> ahora?</div>
@@ -601,10 +601,10 @@ flowchart TD
 
   <!-- ============ 07 INTAKE DOCS ============ -->
   <section class="journey" id="s7">
-    <h2><span class="num">7</span> Intake de documentos (PDF / foto → Supabase)</h2>
-    <p class="purpose">Paciente sube documento por WhatsApp, bot lo descarga y lo guarda en Storage. <b>La interpretación es humana</b> — el bot solo recibe y etiqueta tentativamente.</p>
+    <h2><span class="num">7</span> Intake de documentos (PDF / foto → TASI)</h2>
+    <p class="purpose">Paciente sube documento por WhatsApp, bot lo descarga y lo guarda vía la API de TASI. <b>La interpretación es humana</b> — el bot solo recibe y etiqueta tentativamente.</p>
 
-    <div class="callout"><strong>Caso del usuario:</strong> "sería relativamente fácil que cuando se envíe un PDF que se guarde directamente en la base de Supabase". ✅ Este es ese flow.</div>
+    <div class="callout"><strong>Origen de la idea (usuario):</strong> "que cuando se envíe un PDF se guarde directamente en la base de datos". ✅ Este es ese flow — con la arquitectura actual el documento se guarda <strong>vía la API de TASI</strong> (la idea original mencionaba Supabase; cambió el destino, no el flujo).</div>
 
     <div class="diagram"><div class="mermaid">
 flowchart TD

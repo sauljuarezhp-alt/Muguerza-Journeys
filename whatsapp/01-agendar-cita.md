@@ -50,7 +50,7 @@ flowchart TD
 > **Bot:** «Este estudio requiere **ayuno de 8 horas**. ¿Cuál clínica te queda mejor?
 > 📍 Muguerza Alta Especialidad — Hidalgo
 > 📍 Muguerza Sur — Contry
-> 📍 Spoke Saltillo — Sendero»
+> 📍 Spoke San Pedro — Alta Engracia»
 
 > **Bot:** «✅ Cita confirmada:
 > **Química 27 elementos** · Mié 27 may · 7:30 a.m.

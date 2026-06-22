@@ -127,7 +127,7 @@
     <div class="nav-group">Journeys de clínica</div>
     <a href="#cl1"><span class="num">CL1</span> Journey paciente</a>
     <a href="#cl2"><span class="num">CL2</span> Organic — hospital</a>
-    <a href="#cl3"><span class="num">CL3</span> Inorganic — Saltillo</a>
+    <a href="#cl3"><span class="num">CL3</span> Inorganic — San Pedro</a>
   </nav>
   <div class="meta">
     <strong>Proyecto</strong> CEI Ambulatory Strategy
@@ -140,10 +140,10 @@
   <div class="hero" style="border-left-color:#F4B942;">
     <div class="eyebrow" style="color:#B17B00;">CEI Ambulatoria · Operación</div>
     <h1>Journeys de Clínica</h1>
-    <p class="lead">Flujo end-to-end del paciente desde que agenda hasta que sale con su resultado. Tres variantes: el journey genérico de referencia, el modelo organic dentro de un hospital Muguerza existente y el spoke greenfield de Saltillo.</p>
+    <p class="lead">Flujo end-to-end del paciente desde que agenda hasta que sale con su resultado. Tres variantes: el journey genérico de referencia, el modelo organic dentro de un hospital Muguerza existente y el spoke inorgánico en sitio arrendado en San Pedro (Monterrey).</p>
     <div class="badges">
       <span class="badge">Organic: hub hospitalario</span>
-      <span class="badge">Inorganic: spoke Saltillo</span>
+      <span class="badge">Inorganic: spoke San Pedro (leasing)</span>
       <span class="badge warn">Escalación clínica: protocolos distintos</span>
     </div>
   </div>
@@ -264,23 +264,23 @@ flowchart TD
     </div>
   </section>
 
-  <!-- CL3 Inorganic Saltillo -->
+  <!-- CL3 Inorganic San Pedro -->
   <section class="journey" id="cl3">
-    <h2><span class="num special">CL3</span> Variante Inorganic — Spoke Saltillo</h2>
-    <p class="purpose">Clínica ambulatoria greenfield en Saltillo. Espacio arrendado, diseñado desde cero, con Hospital Muguerza Saltillo como hub de escalación (traslado &lt;20 min). Modelo 100% asset-light.</p>
+    <h2><span class="num special">CL3</span> Variante Inorganic — Spoke arrendado en San Pedro</h2>
+    <p class="purpose">Clínica ambulatoria en sitio arrendado <b>move-in-ready</b> en San Pedro Garza García (Monterrey), adaptado por fit-out — no greenfield. Hospital Muguerza Alta Especialidad como hub de escalación cercano. Modelo 100% asset-light (espacio, equipo y tecnología arrendados).</p>
 
     <div class="diagram"><div class="mermaid">
 flowchart TD
-  A[Paciente de Saltillo agenda via WhatsApp] --> B[Confirmacion y pre-auth por equipo Connect]
-  B --> C[Recordatorio T-24h con direccion del spoke Saltillo]
-  C --> D[Paciente llega al Spoke Saltillo]
+  A[Paciente de Monterrey agenda via WhatsApp] --> B[Confirmacion y pre-auth por equipo Connect]
+  B --> C[Recordatorio T-24h con direccion del spoke San Pedro]
+  C --> D[Paciente llega al Spoke San Pedro]
   D --> E[Check-in en recepcion o via WhatsApp]
   E --> F[Sala de espera - ambiente clinica de especialidad]
   F --> G[Servicio clinico en area dedicada]
   G --> H{Requiere escalacion clinica?}
   H -->|No| I[Alta ambulatoria y resultado por WhatsApp]
-  H -->|Si| J[Protocolo traslado a Hospital Muguerza Saltillo]
-  J --> K[Traslado coordinado - maximo 20 min]
+  H -->|Si| J[Protocolo traslado a Hospital Muguerza Alta Especialidad]
+  J --> K[Traslado coordinado - hub a corta distancia]
   K --> L[Ingreso en hub con expediente disponible en Connect]
   I --> M[Paciente sale del spoke]
   style F fill:#FFF8EC,stroke:#E8A33D
@@ -291,12 +291,12 @@ flowchart TD
     <div class="diagram"><div class="mermaid">
 flowchart TD
   A[Evento clinico en spoke] --> B[Enfermero activa protocolo]
-  B --> C[Llamada a Hospital Muguerza Saltillo - linea directa]
+  B --> C[Llamada a Hospital Muguerza Alta Especialidad - linea directa]
   C --> D[Preparar paciente para traslado]
   D --> E{Estabilidad del paciente}
   E -->|Estable| F[Traslado en vehiculo con acompanante clinico]
   E -->|Inestable| G[Llamar 911 y notificar hospital hub]
-  F --> H[Llegada a hub en maximo 20 min]
+  F --> H[Llegada a hub cercano]
   G --> H
   H --> I[Recepcion en urgencias con expediente de Connect]
   style G fill:#FDECEC,stroke:#D64545
@@ -305,28 +305,29 @@ flowchart TD
 
     <div class="two-col">
       <table>
-        <tr><th>Aspecto</th><th>Spoke Saltillo</th></tr>
+        <tr><th>Aspecto</th><th>Spoke San Pedro</th></tr>
         <tr><td>CAPEX</td><td>100% leasing — espacio, equipo, tecnología</td></tr>
-        <tr><td>Mercado</td><td>Saltillo — nuevo mercado para CEI</td></tr>
-        <tr><td>Servicios v1</td><td>Infusiones, laboratorio, imagen básica</td></tr>
-        <tr><td>Escalación</td><td>Traslado externo al hub &lt;20 min</td></tr>
+        <tr><td>Mercado</td><td>Monterrey / San Pedro — mercado core de Muguerza</td></tr>
+        <tr><td>Servicios v1</td><td>Especialidad única: infusiones / oncología</td></tr>
+        <tr><td>Escalación</td><td>Traslado externo a hub cercano, coordinado</td></tr>
       </table>
       <table>
         <tr><th>Riesgo</th><th>Mitigación</th></tr>
-        <tr><td>Mercado desconocido en Saltillo</td><td>Análisis de demanda + alianzas con médicos locales</td></tr>
-        <tr><td>Escalación más lenta que organic</td><td>Protocolos de traslado pre-acordados, simulacros</td></tr>
-        <tr><td>Bajo volumen inicial</td><td>Leasing permite ajustar capacidad</td></tr>
-        <tr><td>Marca desconocida en Saltillo</td><td>Campaña local + red de médicos referentes</td></tr>
+        <tr><td>Volumen ya capturado por Alivia / Oncare</td><td>Concierge de aseguradora, médicos referentes, precio bundled</td></tr>
+        <tr><td>Fit-out del sitio no listo a tiempo</td><td>Propiedad move-in-ready, obra acotada, hitos con penalización</td></tr>
+        <tr><td>Bajo volumen inicial</td><td>Leasing permite ajustar capacidad y salir del sitio</td></tr>
+        <tr><td>Escalación depende de distancia al hub</td><td>Sitio a corta distancia de Muguerza, traslado pre-acordado</td></tr>
       </table>
     </div>
 
     <h3 style="margin:24px 0 8px;font-size:16px;">Hitos del modelo de negocio</h3>
     <table>
       <tr><th>Hito</th><th>Métrica</th><th>Plazo estimado</th></tr>
-      <tr><td>Break-even operativo</td><td>60–70% de ocupación</td><td>6–12 meses post-apertura</td></tr>
-      <tr><td>Volumen mínimo viable</td><td>25 pacientes / día</td><td>Mes 3</td></tr>
-      <tr><td>NPS objetivo</td><td>&gt;80</td><td>Mes 6</td></tr>
-      <tr><td>Expansión a segundo spoke</td><td>Según resultados Saltillo</td><td>Año 2</td></tr>
+      <tr><td>Sitio live y COFEPRIS-compliant</td><td>Apertura del primer spoke</td><td>≤ 6 meses</td></tr>
+      <tr><td>Primera ruta de pago con aseguradora (PHI)</td><td>Bundle / preferente con pagador ancla (vía Sekura)</td><td>A la apertura</td></tr>
+      <tr><td>Break-even operativo</td><td>~70% de ocupación</td><td>6–12 meses post-apertura</td></tr>
+      <tr><td>Médicos ancla refiriendo</td><td>3–5 especialistas</td><td>Mes 6</td></tr>
+      <tr><td>Decisión de escalar</td><td>Playbook + segundo pagador en proceso</td><td>Mes 12</td></tr>
     </table>
   </section>
 <footer>Muguerza Connect · CEI Ambulatory Strategy · v1 · 2026-05-25</footer>

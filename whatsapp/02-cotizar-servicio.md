@@ -35,7 +35,7 @@ flowchart TD
 > 🩻 **Resonancia magnética de rodilla** (sin contraste)
 > • Muguerza Alta Especialidad: **$6,800**
 > • Muguerza Sur: **$6,500**
-> • Spoke Saltillo: **$5,900**
+> • Spoke San Pedro: **$5,900**
 > Precios privados vigentes hoy. Si tienes aseguradora, el equipo confirma cobertura.
 > ¿Quieres **agendar** ahora?»
 

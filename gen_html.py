@@ -1,6 +1,7 @@
 import os, pathlib
 
-BASE = pathlib.Path(os.path.expanduser("~")) / "Downloads" / "muguerza-journeys"
+# Genera los HTML en la misma carpeta donde vive este script (robusto al checkout).
+BASE = pathlib.Path(__file__).resolve().parent
 
 # ──────────────────────────────────────────────
 # SHARED HELPERS
@@ -215,25 +216,29 @@ INDEX_HTML = """<!DOCTYPE html>
 
     <a href="connect.html" class="card card-connect">
       <div class="icon">🖥️</div>
-      <h2>Connect — CRM</h2>
-      <p class="sub">Muguerza Connect · 5 flujos · Secretaria y Médico</p>
+      <h2>Connect — CRM Ambulatorio</h2>
+      <p class="sub">Muguerza Connect · 9 módulos · Equipo de clínica CEI</p>
       <div class="flows">
-        <span class="flow-tag">Bandeja WhatsApp</span>
-        <span class="flow-tag">Gestión citas</span>
-        <span class="flow-tag">Intake + Pre-auth</span>
-        <span class="flow-tag">Resultados</span>
-        <span class="flow-tag">Dashboard médico</span>
+        <span class="flow-tag">Dashboard</span>
+        <span class="flow-tag">Patients</span>
+        <span class="flow-tag">Calendar</span>
+        <span class="flow-tag">Pre-auth</span>
+        <span class="flow-tag">Inbox</span>
+        <span class="flow-tag">Infrastructure</span>
+        <span class="flow-tag">Results</span>
+        <span class="flow-tag">Insurers</span>
+        <span class="flow-tag">Performance</span>
       </div>
     </a>
 
     <a href="clinica.html" class="card card-clinica">
       <div class="icon">🏥</div>
       <h2>Clínica — Operación</h2>
-      <p class="sub">Journey del paciente · 3 variantes · Organic y Saltillo</p>
+      <p class="sub">Journey del paciente · 3 variantes · Organic y San Pedro</p>
       <div class="flows">
         <span class="flow-tag">Journey genérico</span>
         <span class="flow-tag">Organic hospital</span>
-        <span class="flow-tag">Spoke Saltillo</span>
+        <span class="flow-tag">Spoke San Pedro</span>
         <span class="flow-tag">Escalación clínica</span>
       </div>
     </a>
@@ -249,8 +254,9 @@ INDEX_HTML = """<!DOCTYPE html>
 # ──────────────────────────────────────────────
 CONNECT_SIDEBAR = """<aside class="sidebar" style="--sidebar-dark:#005A54;--sidebar:#00857C;">
   <a href="index.html" class="back">&#8592; Volver al índice</a>
+  <a href="connect.html" class="back">&#8592; Ir al CRM Ambulatorio</a>
   <h1>Muguerza Connect</h1>
-  <div class="subtitle">CRM Journey · v1</div>
+  <div class="subtitle">CRM Consultorio · en pausa</div>
   <nav>
     <div class="nav-group">Secretaria</div>
     <a href="#c1"><span class="num">C1</span> Bandeja WhatsApp CRM</a>
@@ -268,10 +274,12 @@ CONNECT_SIDEBAR = """<aside class="sidebar" style="--sidebar-dark:#005A54;--side
 </aside>"""
 
 CONNECT_MAIN = """  <div class="hero" style="border-left-color:#00857C;">
-    <div class="eyebrow" style="color:#00857C;">Muguerza Connect · CRM</div>
+    <div class="eyebrow" style="color:#00857C;">Muguerza Connect · CRM Consultorio</div>
     <h1>Journeys Secretaria &amp; Médico</h1>
+    <div class="callout warn"><strong>Módulo en pausa.</strong> El foco actual es el <a href="connect.html">CRM Ambulatorio</a>. Este módulo de consultorio médico se preserva como referencia pero no es prioridad. Sus fuentes viven en <code>muguerza-connect/*.md</code>.</div>
     <p class="lead">Flows internos del CRM: cómo la secretaria gestiona la bandeja de WhatsApp, crea y edita citas, tramita pre-autorizaciones y entrega resultados. El médico ve su agenda y expedientes sin acceso a chats.</p>
     <div class="badges">
+      <span class="badge warn">Módulo en pausa</span>
       <span class="badge">Secretaria: 4 flows</span>
       <span class="badge">Médico: 1 flow</span>
       <span class="badge warn">Médico: sin acceso a WhatsApp</span>
@@ -541,7 +549,7 @@ CLINICA_SIDEBAR = """<aside class="sidebar" style="--sidebar-dark:#7A5B00;--side
     <div class="nav-group">Journeys de clínica</div>
     <a href="#cl1"><span class="num">CL1</span> Journey paciente</a>
     <a href="#cl2"><span class="num">CL2</span> Organic — hospital</a>
-    <a href="#cl3"><span class="num">CL3</span> Inorganic — Saltillo</a>
+    <a href="#cl3"><span class="num">CL3</span> Inorganic — San Pedro</a>
   </nav>
   <div class="meta">
     <strong>Proyecto</strong> CEI Ambulatory Strategy
@@ -554,10 +562,10 @@ CLINICA_SIDEBAR = """<aside class="sidebar" style="--sidebar-dark:#7A5B00;--side
 CLINICA_MAIN = """  <div class="hero" style="border-left-color:#F4B942;">
     <div class="eyebrow" style="color:#B17B00;">CEI Ambulatoria · Operación</div>
     <h1>Journeys de Clínica</h1>
-    <p class="lead">Flujo end-to-end del paciente desde que agenda hasta que sale con su resultado. Tres variantes: el journey genérico de referencia, el modelo organic dentro de un hospital Muguerza existente y el spoke greenfield de Saltillo.</p>
+    <p class="lead">Flujo end-to-end del paciente desde que agenda hasta que sale con su resultado. Tres variantes: el journey genérico de referencia, el modelo organic dentro de un hospital Muguerza existente y el spoke inorgánico en sitio arrendado en San Pedro (Monterrey).</p>
     <div class="badges">
       <span class="badge">Organic: hub hospitalario</span>
-      <span class="badge">Inorganic: spoke Saltillo</span>
+      <span class="badge">Inorganic: spoke San Pedro (leasing)</span>
       <span class="badge warn">Escalación clínica: protocolos distintos</span>
     </div>
   </div>
@@ -678,23 +686,23 @@ flowchart TD
     </div>
   </section>
 
-  <!-- CL3 Inorganic Saltillo -->
+  <!-- CL3 Inorganic San Pedro -->
   <section class="journey" id="cl3">
-    <h2><span class="num special">CL3</span> Variante Inorganic — Spoke Saltillo</h2>
-    <p class="purpose">Clínica ambulatoria greenfield en Saltillo. Espacio arrendado, diseñado desde cero, con Hospital Muguerza Saltillo como hub de escalación (traslado &lt;20 min). Modelo 100% asset-light.</p>
+    <h2><span class="num special">CL3</span> Variante Inorganic — Spoke arrendado en San Pedro</h2>
+    <p class="purpose">Clínica ambulatoria en sitio arrendado <b>move-in-ready</b> en San Pedro Garza García (Monterrey), adaptado por fit-out — no greenfield. Hospital Muguerza Alta Especialidad como hub de escalación cercano. Modelo 100% asset-light (espacio, equipo y tecnología arrendados).</p>
 
     <div class="diagram"><div class="mermaid">
 flowchart TD
-  A[Paciente de Saltillo agenda via WhatsApp] --> B[Confirmacion y pre-auth por equipo Connect]
-  B --> C[Recordatorio T-24h con direccion del spoke Saltillo]
-  C --> D[Paciente llega al Spoke Saltillo]
+  A[Paciente de Monterrey agenda via WhatsApp] --> B[Confirmacion y pre-auth por equipo Connect]
+  B --> C[Recordatorio T-24h con direccion del spoke San Pedro]
+  C --> D[Paciente llega al Spoke San Pedro]
   D --> E[Check-in en recepcion o via WhatsApp]
   E --> F[Sala de espera - ambiente clinica de especialidad]
   F --> G[Servicio clinico en area dedicada]
   G --> H{Requiere escalacion clinica?}
   H -->|No| I[Alta ambulatoria y resultado por WhatsApp]
-  H -->|Si| J[Protocolo traslado a Hospital Muguerza Saltillo]
-  J --> K[Traslado coordinado - maximo 20 min]
+  H -->|Si| J[Protocolo traslado a Hospital Muguerza Alta Especialidad]
+  J --> K[Traslado coordinado - hub a corta distancia]
   K --> L[Ingreso en hub con expediente disponible en Connect]
   I --> M[Paciente sale del spoke]
   style F fill:#FFF8EC,stroke:#E8A33D
@@ -705,12 +713,12 @@ flowchart TD
     <div class="diagram"><div class="mermaid">
 flowchart TD
   A[Evento clinico en spoke] --> B[Enfermero activa protocolo]
-  B --> C[Llamada a Hospital Muguerza Saltillo - linea directa]
+  B --> C[Llamada a Hospital Muguerza Alta Especialidad - linea directa]
   C --> D[Preparar paciente para traslado]
   D --> E{Estabilidad del paciente}
   E -->|Estable| F[Traslado en vehiculo con acompanante clinico]
   E -->|Inestable| G[Llamar 911 y notificar hospital hub]
-  F --> H[Llegada a hub en maximo 20 min]
+  F --> H[Llegada a hub cercano]
   G --> H
   H --> I[Recepcion en urgencias con expediente de Connect]
   style G fill:#FDECEC,stroke:#D64545
@@ -719,29 +727,349 @@ flowchart TD
 
     <div class="two-col">
       <table>
-        <tr><th>Aspecto</th><th>Spoke Saltillo</th></tr>
+        <tr><th>Aspecto</th><th>Spoke San Pedro</th></tr>
         <tr><td>CAPEX</td><td>100% leasing — espacio, equipo, tecnología</td></tr>
-        <tr><td>Mercado</td><td>Saltillo — nuevo mercado para CEI</td></tr>
-        <tr><td>Servicios v1</td><td>Infusiones, laboratorio, imagen básica</td></tr>
-        <tr><td>Escalación</td><td>Traslado externo al hub &lt;20 min</td></tr>
+        <tr><td>Mercado</td><td>Monterrey / San Pedro — mercado core de Muguerza</td></tr>
+        <tr><td>Servicios v1</td><td>Especialidad única: infusiones / oncología</td></tr>
+        <tr><td>Escalación</td><td>Traslado externo a hub cercano, coordinado</td></tr>
       </table>
       <table>
         <tr><th>Riesgo</th><th>Mitigación</th></tr>
-        <tr><td>Mercado desconocido en Saltillo</td><td>Análisis de demanda + alianzas con médicos locales</td></tr>
-        <tr><td>Escalación más lenta que organic</td><td>Protocolos de traslado pre-acordados, simulacros</td></tr>
-        <tr><td>Bajo volumen inicial</td><td>Leasing permite ajustar capacidad</td></tr>
-        <tr><td>Marca desconocida en Saltillo</td><td>Campaña local + red de médicos referentes</td></tr>
+        <tr><td>Volumen ya capturado por Alivia / Oncare</td><td>Concierge de aseguradora, médicos referentes, precio bundled</td></tr>
+        <tr><td>Fit-out del sitio no listo a tiempo</td><td>Propiedad move-in-ready, obra acotada, hitos con penalización</td></tr>
+        <tr><td>Bajo volumen inicial</td><td>Leasing permite ajustar capacidad y salir del sitio</td></tr>
+        <tr><td>Escalación depende de distancia al hub</td><td>Sitio a corta distancia de Muguerza, traslado pre-acordado</td></tr>
       </table>
     </div>
 
     <h3 style="margin:24px 0 8px;font-size:16px;">Hitos del modelo de negocio</h3>
     <table>
       <tr><th>Hito</th><th>Métrica</th><th>Plazo estimado</th></tr>
-      <tr><td>Break-even operativo</td><td>60–70% de ocupación</td><td>6–12 meses post-apertura</td></tr>
-      <tr><td>Volumen mínimo viable</td><td>25 pacientes / día</td><td>Mes 3</td></tr>
-      <tr><td>NPS objetivo</td><td>&gt;80</td><td>Mes 6</td></tr>
-      <tr><td>Expansión a segundo spoke</td><td>Según resultados Saltillo</td><td>Año 2</td></tr>
+      <tr><td>Sitio live y COFEPRIS-compliant</td><td>Apertura del primer spoke</td><td>≤ 6 meses</td></tr>
+      <tr><td>Primera ruta de pago con aseguradora (PHI)</td><td>Bundle / preferente con pagador ancla (vía Sekura)</td><td>A la apertura</td></tr>
+      <tr><td>Break-even operativo</td><td>~70% de ocupación</td><td>6–12 meses post-apertura</td></tr>
+      <tr><td>Médicos ancla refiriendo</td><td>3–5 especialistas</td><td>Mes 6</td></tr>
+      <tr><td>Decisión de escalar</td><td>Playbook + segundo pagador en proceso</td><td>Mes 12</td></tr>
     </table>
+  </section>"""
+
+# ──────────────────────────────────────────────
+# CONNECT.HTML — CRM AMBULATORIO (9 módulos, foco actual)
+# ──────────────────────────────────────────────
+CONNECT_AMB_SIDEBAR = """<aside class="sidebar" style="--sidebar-dark:#005A54;--sidebar:#00857C;">
+  <a href="index.html" class="back">&#8592; Volver al índice</a>
+  <h1>Muguerza Connect</h1>
+  <div class="subtitle">CRM Ambulatorio · v1</div>
+  <nav>
+    <div class="nav-group">Módulo ambulatorio</div>
+    <a href="#a1"><span class="num">A1</span> Dashboard operativo</a>
+    <a href="#a2"><span class="num">A2</span> Patients · Registro</a>
+    <a href="#a3"><span class="num">A3</span> Calendar</a>
+    <a href="#a4"><span class="num">A4</span> Pre-auth · Cola</a>
+    <a href="#a5"><span class="num">A5</span> Inbox</a>
+    <a href="#a6"><span class="num">A6</span> Infrastructure</a>
+    <a href="#a7"><span class="num">A7</span> Results</a>
+    <a href="#a8"><span class="num">A8</span> Insurers</a>
+    <a href="#a9"><span class="num">A9</span> Performance</a>
+  </nav>
+  <div class="meta">
+    <strong>Proyecto</strong> CEI Ambulatory Strategy
+    <strong>Actor</strong> Equipo de clínica CEI
+    <strong>Versión</strong> v1 · 2026-06-22
+    <a href="connect-consultorio.html" class="back" style="margin-top:14px;display:inline-block;">Módulo consultorio (en pausa) &#8594;</a>
+  </div>
+</aside>"""
+
+CONNECT_AMB_MAIN = """  <div class="hero" style="border-left-color:#00857C;">
+    <div class="eyebrow" style="color:#00857C;">Muguerza Connect · CRM Ambulatorio</div>
+    <h1>Operación de la Clínica Ambulatoria CEI</h1>
+    <p class="lead">El backbone operativo del modelo ambulatorio: nueve módulos que conectan al equipo de clínica, al paciente, al médico referente y a la aseguradora en un solo sistema. Es el primer pilar a lanzar de la estrategia ambulatoria.</p>
+    <div class="badges">
+      <span class="badge">9 módulos</span>
+      <span class="badge">Actor: equipo de clínica CEI</span>
+      <span class="badge warn">Performance: rol elevado</span>
+      <span class="badge green">En beta avanzada</span>
+    </div>
+  </div>
+
+  <div class="callout"><strong>Arquitectura técnica:</strong> Muguerza Connect es la <strong>capa de UI</strong>. El sistema de registro de las clínicas es <strong>TASI</strong> — la base de datos operativa que las clínicas ya usan. Toda lectura y escritura de datos de clínica (pacientes, citas, recursos, pre-auths, resultados, métricas) ocurre <strong>vía la API de TASI</strong>. Connect no mantiene una base de datos propia para los datos de clínica: orquesta y presenta lo que expone TASI.</div>
+
+  <!-- A1 Dashboard operativo -->
+  <section class="journey" id="a1">
+    <h2><span class="num">A1</span> Dashboard operativo</h2>
+    <p class="purpose">Panel de control diario del equipo de la clínica. Centraliza el estado de la clínica de un vistazo: citas de hoy, check-ins, procedimientos en curso, escalaciones activas, pre-autorizaciones pendientes y ocupación de recursos en vivo.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre Connect e inicia sesion] --> B[Dashboard operativo del dia]
+  B --> C[Tarjetas de estado en vivo]
+  C --> D[Citas de hoy y check-ins]
+  C --> E[Procedimientos en progreso]
+  C --> F[Escalaciones activas]
+  C --> G[Preauths pendientes]
+  C --> H[Ocupacion de recursos en vivo]
+  D --> I{Accion requerida?}
+  F --> I
+  G --> I
+  I -->|Si| J[Click lleva al modulo correspondiente]
+  I -->|No| K[Monitoreo continuo del turno]
+  style B fill:#E8F4F3,stroke:#00857C
+  style F fill:#FDECEC,stroke:#D64545
+    </div></div>
+
+    <div class="callout"><strong>Tarjetas en vivo:</strong> citas de hoy · check-ins · procedimientos en progreso · escalaciones activas · pre-auths pendientes · ocupación de recursos. Cada tarjeta es un acceso directo al módulo correspondiente.</div>
+
+    <div class="callout warn"><strong>Permisos:</strong> <code>clinic_staff</code> ve operación de su clínica · <code>clinic_coordinator</code> ve además negocio (A8, A9) · <code>admin</code> solo lectura de auditoría. <em>Roles tentativos — verificar contra el modelo de roles real que exponga la API de TASI.</em></div>
+  </section>
+
+  <!-- A2 Patients -->
+  <section class="journey" id="a2">
+    <h2><span class="num">A2</span> Patients · Registro ambulatorio</h2>
+    <p class="purpose">Registro buscable de pacientes ambulatorios con aseguradora, póliza, historial de visitas, estado de tratamiento, próximas citas y alertas. Cada perfil abre una vista longitudinal del paciente.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre Patients] --> B[Buscar por telefono nombre o poliza]
+  B --> C{Paciente existe?}
+  C -->|No| D[Crear paciente ambulatorio con datos minimos]
+  C -->|Si| E[Abrir perfil longitudinal]
+  D --> E
+  E --> F[Ver citas preauths resultados y conversaciones]
+  F --> G[Ver recursos asignados y timeline]
+  G --> H{Accion}
+  H -->|Nueva cita| I[Abrir Calendar con paciente cargado]
+  H -->|Ver resultados| J[Abrir Results del paciente]
+  H -->|Atender alerta| K[Resolver alerta activa]
+  style E fill:#E8F4F3,stroke:#00857C
+    </div></div>
+
+    <details><summary>Qué contiene el perfil longitudinal</summary>
+    <ul class="actions">
+      <li><strong>Citas</strong>Historial y próximas, con estado</li>
+      <li><strong>Pre-auths</strong>Estatus por aseguradora y folio</li>
+      <li><strong>Resultados</strong>Lab e imagen ligados a cada visita</li>
+      <li><strong>Conversaciones</strong>Hilo de Inbox del paciente</li>
+      <li><strong>Recursos</strong>Sillón o sala asignada por visita</li>
+      <li><strong>Timeline</strong>Línea de tiempo de toda la relación</li>
+    </ul>
+    </details>
+
+    <details><summary>Edge cases &amp; manejo</summary>
+    <table>
+      <tr><th>#</th><th>Caso</th><th>Manejo</th></tr>
+      <tr><td>E1</td><td>Paciente sin INE o datos completos</td><td>Crear con datos mínimos, perfil marcado incompleto</td></tr>
+      <tr><td>E2</td><td>Duplicado por dos teléfonos</td><td>Sugerir fusión de expedientes al coordinador</td></tr>
+      <tr><td>E3</td><td>Paciente recurrente de infusión</td><td>Mostrar serie de tratamiento y adherencia</td></tr>
+    </table>
+    </details>
+  </section>
+
+  <!-- A3 Calendar -->
+  <section class="journey" id="a3">
+    <h2><span class="num">A3</span> Calendar</h2>
+    <p class="purpose">Workspace completo de citas ambulatorias. Crear visitas, filtrar por estado o tipo de servicio, ver estado de pago y pre-auth, asignar recursos operativos y mover al paciente por los estados agendado, check-in, en progreso y completado.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre Calendar] --> B[Filtrar por estado o tipo de servicio]
+  B --> C[Crear nueva visita]
+  C --> D[Elegir servicio del catalogo]
+  D --> E[Asignar recurso sillon sala o quirofano]
+  E --> F[Verificar estado de pago y preauth]
+  F --> G[Reservar slot y crear cita]
+  G --> H[Mover por estados del flujo]
+  H --> I[Scheduled luego Check-in]
+  I --> J[In-progress luego Completed]
+  J --> K[Liberar recurso al completar]
+  style G fill:#DCF8C6,stroke:#25D366
+  style K fill:#E8F4F3,stroke:#00857C
+    </div></div>
+
+    <div class="callout"><strong>Diferencia clave vs consultorio:</strong> el Calendar ambulatorio <strong>asigna recursos físicos</strong> (sillón de infusión, sala de imagen, quirófano) y libera la capacidad al completar — alimenta directamente al módulo Infrastructure (A6).</div>
+
+    <details><summary>Edge cases &amp; manejo</summary>
+    <table>
+      <tr><th>#</th><th>Caso</th><th>Manejo</th></tr>
+      <tr><td>E1</td><td>Slot o recurso tomado al confirmar</td><td>Recargar disponibilidad de slots y recursos</td></tr>
+      <tr><td>E2</td><td>Cita con aseguradora sin pre-auth</td><td>Crear cita y generar tarea en la cola de Pre-auth (A4)</td></tr>
+      <tr><td>E3</td><td>Servicio requiere recurso no disponible</td><td>Bloquear y sugerir siguiente slot con recurso libre</td></tr>
+      <tr><td>E4</td><td>Infusión recurrente</td><td>Crear serie cada X días con recurso reservado</td></tr>
+    </table>
+    </details>
+  </section>
+
+  <!-- A4 Pre-auth -->
+  <section class="journey" id="a4">
+    <h2><span class="num">A4</span> Pre-auth · Cola de autorización</h2>
+    <p class="purpose">Cola de trabajo de pre-autorización para servicios con aseguradora. Permite seguir solicitudes por estatus, revisar folios del pagador, identificar aprobaciones pendientes y evitar que un servicio avance sin la autorización requerida.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre cola de Pre-auth] --> B[Filtrar por estatus]
+  B --> C[Abrir caso de preauth]
+  C --> D[Registrar folio de la aseguradora]
+  D --> E{Estatus del caso}
+  E -->|Pendiente| F[Dar seguimiento y fecha limite]
+  E -->|Aprobada| G[Marcar cita como autorizada]
+  E -->|Rechazada| H[Notificar opciones de pago privado]
+  F --> I{Servicio listo para avanzar?}
+  I -->|Sin autorizacion| J[Bloquear servicio en Calendar]
+  G --> K[Liberar servicio para ejecucion]
+  style J fill:#FDECEC,stroke:#D64545
+  style K fill:#DCF8C6,stroke:#25D366
+    </div></div>
+
+    <div class="callout danger"><strong>Regla dura:</strong> un servicio con cobertura de aseguradora <strong>no avanza</strong> si la pre-autorización no está aprobada. La cola bloquea la ejecución en Calendar hasta limpiar el folio (o convertir a pago privado con consentimiento).</div>
+
+    <div class="stats">
+      <div class="stat"><div class="val">&lt;24h</div><div class="lbl">Tramitación de preauth</div></div>
+      <div class="stat"><div class="val">&gt;90%</div><div class="lbl">Citas autorizadas antes de fecha</div></div>
+      <div class="stat"><div class="val">0</div><div class="lbl">Servicios ejecutados sin folio</div></div>
+    </div>
+  </section>
+
+  <!-- A5 Inbox -->
+  <section class="journey" id="a5">
+    <h2><span class="num">A5</span> Inbox</h2>
+    <p class="purpose">Bandeja de comunicación estilo CRM conectada al journey del paciente. Organiza conversaciones por paciente, canal, intención, estado de no-leído y handoff humano, para dar seguimiento a citas, pre-autorizaciones, resultados, escalaciones y solicitudes generales.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre Inbox del CRM] --> B[Conversaciones ligadas al journey del paciente]
+  B --> C[Organizar por paciente canal intencion y no leidos]
+  C --> D[Seleccionar conversacion con handoff humano]
+  D --> E[Panel lateral con citas y documentos del paciente]
+  E --> F[Responder o usar plantilla rapida]
+  F --> G{Caso resuelto?}
+  G -->|Si| H[Marcar resuelto y devolver al bot]
+  G -->|Otra area| I[Reasignar con nota interna]
+  style D fill:#E8F4F3,stroke:#00857C
+  style H fill:#DCF8C6,stroke:#25D366
+    </div></div>
+
+    <div class="chat-preview">
+      <div class="label">El equipo de clínica responde desde el Inbox</div>
+      <div class="bubble bot"><span class="author">Bot Concierge</span>Te paso con el equipo de la clínica para confirmar tu infusión del jueves.</div>
+      <div class="bubble patient"><span class="author">Ana López</span>gracias, ¿necesito algo de mi aseguradora?</div>
+      <div class="bubble secretary"><span class="author">Equipo Clínica</span>Hola Ana, tu pre-autorización con GNP ya está aprobada ✅. Solo llega 15 min antes con tu credencial.</div>
+    </div>
+
+    <div class="callout warn"><strong>Aseguradoras:</strong> el bot nunca las gestiona; cualquier mención hace handoff al equipo. La autorización se trabaja en la cola de Pre-auth (A4).</div>
+  </section>
+
+  <!-- A6 Infrastructure -->
+  <section class="journey" id="a6">
+    <h2><span class="num">A6</span> Infrastructure · Capacidad en vivo</h2>
+    <p class="purpose">Mapa de capacidad en tiempo real de los recursos de la clínica: sillones de infusión, estaciones de laboratorio, salas de imagen, quirófanos y consultorios. Muestra qué recursos están libres, ocupados o sobre-tiempo para coordinar throughput y liberar capacidad al completar servicios.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Equipo abre Infrastructure] --> B[Mapa de capacidad en vivo]
+  B --> C[Sillones de infusion]
+  B --> D[Estaciones de laboratorio]
+  B --> E[Salas de imagen]
+  B --> F[Quirofanos y consultorios]
+  C --> G{Estado del recurso}
+  G -->|Libre| H[Asignar a la siguiente cita]
+  G -->|Ocupado| I[Ver tiempo restante estimado]
+  G -->|Sobre tiempo| J[Alerta al coordinador]
+  H --> K[Throughput coordinado meta 70 por ciento]
+  style J fill:#FDECEC,stroke:#D64545
+  style K fill:#E8F4F3,stroke:#00857C
+    </div></div>
+
+    <div class="callout"><strong>Por qué importa:</strong> la utilización de recursos es la palanca de margen del modelo USPI / Salud Digna. El breakeven operativo se ubica cerca del <strong>70% de utilización</strong>; este módulo es la herramienta que hace visible y accionable esa disciplina.</div>
+
+    <div class="stats">
+      <div class="stat"><div class="val">~70%</div><div class="lbl">Utilización objetivo (breakeven)</div></div>
+      <div class="stat"><div class="val">En vivo</div><div class="lbl">Estado libre / ocupado / sobre-tiempo</div></div>
+    </div>
+  </section>
+
+  <!-- A7 Results -->
+  <section class="journey" id="a7">
+    <h2><span class="num">A7</span> Results</h2>
+    <p class="purpose">Seguimiento de resultados de laboratorio, imagen y notas de procedimiento. Destaca hallazgos críticos, separa notificados de pendientes y liga cada resultado al expediente del paciente para que el follow-up no dependa de seguimiento manual.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Llega resultado de lab o imagen] --> B[Abrir expediente en Patients]
+  B --> C[Subir PDF al Storage]
+  C --> D{Resultado critico?}
+  D -->|Si| E[Escalar al medico antes de notificar]
+  D -->|No| F[Marcar para notificar al paciente]
+  E --> G[Medico revisa y autoriza entrega]
+  G --> F
+  F --> H[Disparar notificacion por WhatsApp]
+  H --> I[Registrar entrega y enlace generado]
+  style E fill:#FDECEC,stroke:#D64545
+  style H fill:#25D366,stroke:#075E54,color:#fff
+    </div></div>
+
+    <div class="callout danger"><strong>Regla dura heredada:</strong> los resultados marcados como críticos no se notifican al paciente hasta que el médico los autoriza explícitamente. Sin excepción.</div>
+
+    <div class="stats">
+      <div class="stat"><div class="val">&gt;90%</div><div class="lbl">Notificados el mismo día</div></div>
+      <div class="stat"><div class="val">&lt;5 min</div><div class="lbl">Resultado en sistema a WhatsApp</div></div>
+      <div class="stat"><div class="val">100%</div><div class="lbl">Críticos escalados antes de entregar</div></div>
+    </div>
+  </section>
+
+  <!-- A8 Insurers -->
+  <section class="journey" id="a8">
+    <h2><span class="num">A8</span> Insurers</h2>
+    <p class="purpose">Resumen de desempeño de la clínica agrupado por aseguradora. Muestra total de citas, servicios completados, pre-autorizaciones pendientes y autorizaciones aprobadas, dando visibilidad de los cuellos de botella relacionados con cada pagador.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Coordinador abre Insurers] --> B[Actividad agrupada por aseguradora]
+  B --> C[Citas y servicios completados]
+  B --> D[Preauths pendientes y aprobadas]
+  C --> E{Cuello de botella por pagador?}
+  D --> E
+  E -->|Si| F[Drill-down a casos pendientes]
+  F --> G[Coordinar con el pagador via equipo]
+  E -->|No| H[Monitoreo de desempeno por pagador]
+  style B fill:#E8F4F3,stroke:#00857C
+    </div></div>
+
+    <details><summary>Métricas por aseguradora</summary>
+    <table>
+      <tr><th>Métrica</th><th>Para qué</th></tr>
+      <tr><td>Citas totales</td><td>Peso del pagador en el volumen de la clínica</td></tr>
+      <tr><td>Servicios completados</td><td>Conversión real de cita a servicio</td></tr>
+      <tr><td>Pre-auths pendientes</td><td>Riesgo de servicios bloqueados</td></tr>
+      <tr><td>Autorizaciones aprobadas</td><td>Salud de la relación con el pagador</td></tr>
+    </table>
+    </details>
+
+    <div class="callout"><strong>Conexión estratégica:</strong> este módulo sostiene la negociación de paquetes <em>bundled</em> con pagadores ancla (canal Sekura) — el mecanismo de margen del modelo USPI tropicalizado.</div>
+  </section>
+
+  <!-- A9 Performance -->
+  <section class="journey" id="a9">
+    <h2><span class="num">A9</span> Performance</h2>
+    <p class="purpose">Módulo de analítica financiera y operativa de la clínica ambulatoria. Sigue ingreso cobrado, servicios completados, pacientes únicos, margen estimado, pipeline de aseguradoras, cancelaciones por pre-auth, tendencias mensuales, modelos de pago y desempeño por servicio.</p>
+
+    <div class="diagram"><div class="mermaid">
+flowchart TD
+  A[Coordinador o admin abre Performance] --> B[Tablero de unit economics]
+  B --> C[Ingreso cobrado y servicios completados]
+  B --> D[Pacientes unicos y margen estimado]
+  B --> E[Pipeline de aseguradoras]
+  B --> F[Cancelaciones por preauth]
+  B --> G[Tendencias mensuales y modelos de pago]
+  C --> H{Desviacion vs meta?}
+  D --> H
+  H -->|Si| I[Identificar servicio o pagador a corregir]
+  H -->|No| J[Validar disciplina de margen]
+  style B fill:#E8F4F3,stroke:#00857C
+  style I fill:#FFF8EC,stroke:#E8A33D
+    </div></div>
+
+    <div class="callout danger"><strong>Permiso elevado:</strong> Performance expone datos financieros (ingreso, margen). Solo accesible a <code>clinic_coordinator</code> y <code>admin</code> — no al equipo operativo general. <em>Rol a verificar contra el esquema real.</em></div>
+
+    <div class="callout warn"><strong>Sin UI sin dato real:</strong> las métricas de este módulo (margen, ingreso, cancelaciones) deben venir de la <strong>API de TASI</strong> — verificar qué endpoints/campos financieros expone antes de implementar la vista. No se renderizan números inventados.</div>
   </section>"""
 
 # ──────────────────────────────────────────────
@@ -749,18 +1077,28 @@ flowchart TD
 # ──────────────────────────────────────────────
 index_path = BASE / "index.html"
 connect_path = BASE / "connect.html"
+connect_cons_path = BASE / "connect-consultorio.html"
 clinica_path = BASE / "clinica.html"
 
 index_path.write_text(INDEX_HTML, encoding="utf-8")
 print(f"Created: {index_path}")
 
 connect_html = page(
-    "Muguerza Connect · CRM Journey v1",
-    CONNECT_SIDEBAR,
-    CONNECT_MAIN
+    "Muguerza Connect · CRM Ambulatorio v1",
+    CONNECT_AMB_SIDEBAR,
+    CONNECT_AMB_MAIN
 )
 connect_path.write_text(connect_html, encoding="utf-8")
 print(f"Created: {connect_path}")
+
+# Consultorio: módulo en pausa, preservado como archivo (no es el foco actual).
+connect_cons_html = page(
+    "Muguerza Connect · CRM Consultorio (en pausa)",
+    CONNECT_SIDEBAR,
+    CONNECT_MAIN
+)
+connect_cons_path.write_text(connect_cons_html, encoding="utf-8")
+print(f"Created: {connect_cons_path}")
 
 clinica_html = page(
     "CEI Ambulatoria · Clinica Journey v1",

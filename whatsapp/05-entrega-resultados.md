@@ -6,7 +6,7 @@
 Notificar al paciente cuando sus resultados están listos y entregarle el PDF por WhatsApp con link firmado de respaldo.
 
 ## 2. Precondiciones
-- Resultado subido a Supabase Storage por secretaria (o integración LIS/PACS)
+- Resultado subido vía API de TASI por el equipo (o integración LIS/PACS)
 - Status del resultado = listo y notify_patient = true
 
 ## 3. Happy path

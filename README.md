@@ -15,13 +15,36 @@
 | 03 | [Reagendar / cancelar](whatsapp/03-reagendar-cancelar.md) | Cambio o cancelación de cita |
 | 04 | [Recordatorio de cita](whatsapp/04-recordatorio-cita.md) | Outbound 24h y 2h antes |
 | 05 | [Entrega de resultados](whatsapp/05-entrega-resultados.md) | Notificación + descarga de PDF |
-| 06 | [Intake de documentos](whatsapp/06-intake-documentos.md) | PDF/imagen -> Supabase Storage |
+| 06 | [Intake de documentos](whatsapp/06-intake-documentos.md) | PDF/imagen -> almacenamiento vía API TASI |
 | 07 | [Check-in de llegada](whatsapp/07-check-in-llegada.md) | Aviso de llegada desde WhatsApp |
 | 08 | [FAQ](whatsapp/08-faq.md) | Ubicación, horarios, estacionamiento |
 | 09 | [Derivar consulta especialidad](whatsapp/09-derivar-consulta-especialidad.md) | Handoff a secretaria |
 | 10 | [Escalación a humano](whatsapp/10-escalacion-humano.md) | Fallback genérico |
 
-### Muguerza Connect · CRM
+### Muguerza Connect · CRM Ambulatorio (foco actual)
+
+`connect.html` es el **CRM del módulo ambulatorio** — 9 módulos para el equipo de clínica CEI.
+Ver diseño en [PLAN-CONNECT-MODULO-AMBULATORIO.md](PLAN-CONNECT-MODULO-AMBULATORIO.md).
+
+| # | Módulo | Actor | Estado |
+|---|---|---|---|
+| A1 | Dashboard operativo | Equipo clínica | Existe (era dashboard del médico, reenfocado) |
+| A2 | Patients · Registro | Equipo clínica | Net-new |
+| A3 | Calendar | Equipo clínica | Lógica de C2, re-escalada |
+| A4 | Pre-auth · Cola | Equipo clínica | Lógica de C3, re-escalada |
+| A5 | Inbox | Equipo clínica | Lógica de C1, re-escalada |
+| A6 | Infrastructure · Capacidad | Equipo clínica | Net-new |
+| A7 | Results | Equipo clínica | Lógica de C4, re-escalada |
+| A8 | Insurers | Coordinador | Net-new |
+| A9 | Performance | Coordinador / Admin | Net-new (rol elevado) |
+
+> **Pendiente:** fuentes `.md` de los 9 módulos en `connect-ambulatorio/` (próxima pasada). El HTML
+> ya se genera desde `gen_html.py`.
+
+### Muguerza Connect · CRM Consultorio (en pausa)
+
+Módulo de consultorio médico privado. **No es prioridad ahora** — preservado en
+`connect-consultorio.html`. Estas fuentes quedan intactas como referencia:
 
 | # | Journey | Actor |
 |---|---|---|
@@ -37,7 +60,7 @@
 |---|---|---|
 | 01 | [Paciente ambulatorio genérico](clinica/01-journey-paciente-ambulatorio-generico.md) | Ambos |
 | 02 | [Variante Organic](clinica/02-variante-organic-hospital.md) | Hospital existente |
-| 03 | [Variante Inorganic – Saltillo](clinica/03-variante-inorganic-spoke-saltillo.md) | Greenfield |
+| 03 | [Variante Inorganic – San Pedro](clinica/03-variante-inorganic-spoke-monterrey.md) | Sitio arrendado (Monterrey) |
 
 ## Convenciones
 
